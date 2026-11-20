@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BIS Tech | VIP Subscriptions & Checkout</title>
+    <script>
+        if (localStorage.getItem('nova_authenticated') !== 'true') { window.location.href = "login.html"; }
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { 
+            background: linear-gradient(rgba(11, 15, 25, 0.88), rgba(11, 15, 25, 0.94)), url('https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1920&q=80') center/cover fixed;
+            color: #ffffff; line-height: 1.6; 
+        }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 6%; background: rgba(17, 24, 39, 0.92); backdrop-filter: blur(8px); border-bottom: 1px solid #1f2937; position: sticky; top: 0; z-index: 100; flex-wrap: wrap; gap: 10px; }
+        .logo { font-size: 24px; font-weight: bold; color: #38bdf8; }
+        nav { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+        nav a { color: #d1d5db; text-decoration: none; font-size: 13px; font-weight: 500; }
+        nav a:hover { color: #38bdf8; }
+        .btn-logout { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid #ef4444; padding: 4px 10px; border-radius: 6px; font-size: 12px; cursor: pointer; font-weight: bold; }
+        .container { max-width: 700px; margin: 30px auto; padding: 0 20px; }
+        .payment-card { background: rgba(17, 24, 39, 0.88); border: 1px solid #1f2937; border-radius: 12px; padding: 30px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 12px; color: #9ca3af; margin-bottom: 5px; }
+        .form-group select, .form-group input { width: 100%; background: #1f2937; border: 1px solid #374151; padding: 10px 12px; border-radius: 8px; color: white; font-size: 14px; outline: none; }
+        .btn-pay { background: #2563eb; color: white; border: none; padding: 14px; border-radius: 8px; width: 100%; font-weight: bold; cursor: pointer; font-size: 15px; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">BIS Checkout 💳</div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="clips.html">Clips</a>
+            <a href="live.html">Live</a>
+            <a href="payment.html" style="color: #38bdf8; font-weight: bold;">VIP Checkout</a>
+            <a href="admin.html" style="color: #ef4444;">⚙️ Admin</a>
+            <button class="btn-logout" onclick="localStorage.removeItem('nova_authenticated'); window.location.href='login.html';">🚪 Logout</button>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="payment-card">
+            <h2>👑 Optional VIP Career Subscriptions</h2>
+            <p style="font-size: 13px; color: #9ca3af; margin-bottom: 20px;">VIP is completely optional! Choose a plan if you want instant career fast-track matching and priority delivery.</p>
+
+            <div class="form-group">
+                <label>Select Payment Gateway</label>
+                <select id="gatewaySelect">
+                    <option value="Telebirr">Telebirr Mobile Money</option>
+                    <option value="CBE Birr">CBE Birr Account</option>
+                    <option value="Chapa">Chapa / Visa Card</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Account / Phone Number</label>
+                <input type="text" id="payAccount" placeholder="0911223344">
+            </div>
+
+            <div class="form-group">
+                <label>Select Optional VIP Plan (200 to 6,000 ETB)</label>
+                <select id="vipPlanSelect" onchange="updateVIPAmount()">
+                    <option value="200">1 Week VIP Plan — 200 ETB</option>
+                    <option value="600" selected>1 Month VIP Plan — 600 ETB</option>
+                    <option value="3000">6 Months (Half Year) VIP Plan — 3,000 ETB</option>
+                    <option value="6000">1 Year VIP Plan — 6,000 ETB</option>
+                </select>
+            </div>
+
+            <div style="background: #1f2937; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: flex; justify-content: space-between;">
+                <span>Total Amount:</span>
+                <b id="displayVIPAmount" style="color: #38bdf8; font-size: 18px;">600.00 ETB</b>
+            </div>
+
+            <button class="btn-pay" onclick="processVIPPayment()">Authorize & Activate VIP 🔒</button>
+        </div>
+    </div>
+
+    <script>
+        function updateVIPAmount() {
+            const val = document.getElementById('vipPlanSelect').value;
+            document.getElementById('displayVIPAmount').innerText = parseInt(val).toLocaleString() + ".00 ETB";
+        }
+
+        function processVIPPayment() {
+            const account = document.getElementById('payAccount').value.trim();
+            const planSelect = document.getElementById('vipPlanSelect');
+            const price = parseInt(planSelect.value);
+            const planName = planSelect.options[planSelect.selectedIndex].text;
+
+            if(!account) return alert("⚠️ Please enter your phone number or account.");
+
+            let platformFee = price * 0.15;
+            let existingRev = parseFloat(localStorage.getItem('nova_total_revenue') || '1850');
+            localStorage.setItem('nova_total_revenue', (existingRev + platformFee).toFixed(2));
+
+            localStorage.setItem('nova_vip_status', 'active');
+            localStorage.setItem('nova_vip_plan', planName);
+
+            alert(`🎉 Payment Successful via ${document.getElementById('gatewaySelect').value}!\n\n👑 ${planName} Activated!`);
+            window.location.href = "career.html";
+        }
+    </script>
+</body>
+</html>

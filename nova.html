@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOVA AI | Your Skills. Your Opportunities. Your Future.</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: #0b0f19; color: #ffffff; line-height: 1.6; }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 8%; background: #111827; border-bottom: 1px solid #1f2937; }
+        .logo { font-size: 24px; font-weight: bold; color: #38bdf8; letter-spacing: 1px; }
+        nav a { color: #d1d5db; text-decoration: none; margin-left: 25px; font-size: 15px; }
+        nav a:hover { color: #38bdf8; }
+        .btn-primary { background: #2563eb; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; border: none; cursor: pointer; }
+        .btn-primary:hover { background: #1d4ed8; }
+        .hero { text-align: center; padding: 90px 10%; background: radial-gradient(circle at top, #1e293b, #0b0f19); }
+        .hero h1 { font-size: 48px; margin-bottom: 15px; background: linear-gradient(to right, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { font-size: 18px; color: #9ca3af; max-width: 650px; margin: 0 auto 30px; }
+        .skill-box { background: #111827; padding: 30px; border-radius: 12px; max-width: 600px; margin: 0 auto; border: 1px solid #1f2937; }
+        .skill-box input { width: 70%; padding: 12px; border-radius: 6px; border: 1px solid #374151; background: #1f2937; color: white; font-size: 15px; }
+        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; padding: 60px 8%; }
+        .card { background: #111827; padding: 25px; border-radius: 12px; border: 1px solid #1f2937; }
+        .card h3 { color: #38bdf8; margin-bottom: 10px; }
+        .card p { color: #9ca3af; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">NOVA AI</div>
+        <nav>
+            <a href="#career">NOVA Career</a>
+            <a href="#work">NOVA Work</a>
+            <a href="#models">Portfolio & Models</a>
+            <a href="#chat">Messages</a>
+            <a href="#" class="btn-primary">Sign In</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Your Skills. Your Opportunities. Your Future.</h1>
+        <p>Turn your real-world skills into global job opportunities with our AI Skill-to-Work Engine, Portfolio Showcase, and Direct Messaging.</p>
+        
+        <div class="skill-box">
+            <h3 style="margin-bottom: 15px;">Test the Skill-to-Work Engine</h3>
+            <input type="text" id="skillInput" placeholder="Enter your skill (e.g. Modeling, IT Support, Design)...">
+            <button class="btn-primary" onclick="analyzeSkill()">Analyze</button>
+            <p id="result" style="margin-top: 15px; color: #34d399; font-size: 14px;"></p>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="card">
+            <h3>1. Skill-to-Work Engine</h3>
+            <p>AI evaluates your skill, fills knowledge gaps, builds your CV, and matches you with global jobs.</p>
+        </div>
+        <div class="card">
+            <h3>2. Creator & Model Profiles</h3>
+            <p>Upload high-quality photos and videos to showcase your portfolio directly to employers and agencies.</p>
+        </div>
+        <div class="card">
+            <h3>3. Real-Time Chat</h3>
+            <p>Connect and chat instantly with employers, clients, and professionals worldwide.</p>
+        </div>
+    </section>
+
+    <script>
+        function analyzeSkill() {
+            const skill = document.getElementById('skillInput').value;
+            const result = document.getElementById('result');
+            if(skill.trim() === "") {
+                result.style.color = "#f87171";
+                result.innerText = "Please enter a skill first!";
+            } else {
+                result.style.color = "#34d399";
+                result.innerText = "NOVA AI is analyzing '" + skill + "'... Ready to generate your CV, Assessment, and Job Matches!";
+            }
+        }
+    </script>
+
+</body>
+</html>

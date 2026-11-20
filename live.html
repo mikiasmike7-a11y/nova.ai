@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BIS Tech | TikTok Live Arena, Audio Controls & 12-Language AI Supporter</title>
+    <script>
+        if (localStorage.getItem('nova_authenticated') !== 'true') { window.location.href = "login.html"; }
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        body { background: #050509; color: #ffffff; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+        
+        /* Header */
+        header { display: flex; justify-content: space-between; align-items: center; padding: 10px 3%; background: rgba(17, 24, 39, 0.95); border-bottom: 1px solid #1f2937; z-index: 100; flex-shrink: 0; }
+        .logo { font-size: 16px; font-weight: bold; color: #38bdf8; }
+        nav { display: flex; align-items: center; gap: 10px; }
+        nav a { color: #d1d5db; text-decoration: none; font-size: 11px; font-weight: 500; }
+        nav a:hover { color: #38bdf8; }
+        .btn-logout { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid #ef4444; padding: 2px 6px; border-radius: 4px; font-size: 10px; cursor: pointer; font-weight: bold; }
+
+        /* Main Workspace */
+        .live-workspace { flex-grow: 1; display: flex; justify-content: center; align-items: center; background: #000; position: relative; overflow: hidden; }
+
+        /* TikTok Vertical Phone Frame */
+        .tiktok-live-container { width: 100%; max-width: 420px; height: 100%; background: #111; position: relative; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 0 40px rgba(0,0,0,0.9); }
+        
+        /* Main Video Stream */
+        .main-stream-video { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: 1; background: #000; }
+        
+        /* Top TikTok Overlay Header */
+        .tiktok-top-bar { position: absolute; top: 12px; left: 12px; right: 12px; display: flex; justify-content: space-between; align-items: center; z-index: 20; }
+        .host-info-pill { background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); padding: 3px 8px 3px 3px; border-radius: 20px; display: flex; align-items: center; gap: 6px; border: 1px solid rgba(255,255,255,0.15); }
+        .host-info-pill img { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; }
+        .host-info-pill span { font-size: 11px; font-weight: bold; color: #fff; }
+        .host-info-pill button { background: #ef4444; color: white; border: none; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: bold; cursor: pointer; }
+
+        .top-right-pills { display: flex; gap: 6px; align-items: center; }
+        .live-viewer-badge { background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); padding: 4px 10px; border-radius: 20px; font-size: 11px; color: #fff; border: 1px solid rgba(255,255,255,0.15); }
+        .setting-report-btn { background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); width: 28px; height: 28px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; color: white; cursor: pointer; font-size: 13px; }
+
+        /* Floating Comments Stream (Left Bottom) */
+        .tiktok-comments-overlay { position: absolute; bottom: 120px; left: 12px; right: 75px; max-height: 150px; overflow-y: auto; z-index: 20; display: flex; flex-direction: column; gap: 6px; pointer-events: none; }
+        .t-comment-bubble { background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px); padding: 6px 10px; border-radius: 12px; font-size: 11px; color: #f3f4f6; width: fit-content; max-width: 100%; word-break: break-word; border: 1px solid rgba(255,255,255,0.1); }
+        .t-comment-bubble b { color: #38bdf8; margin-right: 4px; }
+
+        /* Right Side Action Buttons (AI Supporter, Audio Toggle, Invite, Gift, Share) */
+        .tiktok-right-actions { position: absolute; bottom: 120px; right: 12px; display: flex; flex-direction: column; gap: 10px; z-index: 20; align-items: center; }
+        .side-action-btn { width: 42px; height: 42px; background: rgba(0, 0, 0, 0.55); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; color: white; font-size: 14px; transition: 0.2s; }
+        .side-action-btn:hover { background: rgba(255, 255, 255, 0.25); transform: scale(1.05); }
+        .side-action-btn span { font-size: 8px; font-weight: bold; margin-top: 1px; }
+        .ai-agent-btn { background: linear-gradient(135deg, #2563eb, #10b981); border-color: #38bdf8; }
+
+        /* Bottom Cluster: Music Uploader & Audio Mute Controls + Chat Bar */
+        .bottom-control-cluster { position: absolute; bottom: 10px; left: 10px; right: 10px; z-index: 25; display: flex; flex-direction: column; gap: 6px; background: rgba(17, 24, 39, 0.9); backdrop-filter: blur(12px); padding: 8px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.15); }
+        
+        .music-upload-row { display: flex; justify-content: space-between; align-items: center; font-size: 11px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 6px; }
+        .music-upload-btn { background: #2563eb; color: white; border: none; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; cursor: pointer; }
+        .music-upload-btn:hover { background: #1d4ed8; }
+
+        .tiktok-bottom-bar { display: flex; gap: 6px; align-items: center; }
+        .tiktok-chat-input { flex-grow: 1; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 6px 10px; color: white; font-size: 11px; outline: none; }
+        .tiktok-chat-input::placeholder { color: #9ca3af; }
+        .t-action-icon-btn { width: 32px; height: 32px; background: rgba(255, 255, 255, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: white; font-size: 14px; flex-shrink: 0; }
+        .t-action-icon-btn:hover { background: rgba(255, 255, 255, 0.25); }
+
+        /* Gift Animation Popup */
+        #giftPopupOverlay { position: absolute; top: 35%; left: 50%; transform: translate(-50%, -50%); font-size: 45px; z-index: 100; pointer-events: none; display: none; text-align: center; animation: popGift 1.5s ease-out forwards; }
+        @keyframes popGift { 0% { opacity: 0; transform: translate(-50%, 0) scale(0.3); } 50% { opacity: 1; transform: translate(-50%, -40px) scale(1.3); } 100% { opacity: 0; transform: translate(-50%, -90px) scale(1); } }
+
+        /* Bottom Sheet Modals (Gift & 12-Language AI Supporter) */
+        .bottom-sheet-modal { display: none; position: absolute; bottom: 0; left: 0; width: 100%; background: rgba(17, 24, 39, 0.97); backdrop-filter: blur(15px); border-top-left-radius: 16px; border-top-right-radius: 16px; padding: 16px; z-index: 200; border-top: 1px solid #374151; }
+        .gift-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 10px; }
+        .gift-item { background: #1f2937; border: 1px solid #374151; border-radius: 10px; padding: 10px; text-align: center; cursor: pointer; font-size: 20px; }
+        .gift-item:hover { border-color: #f59e0b; background: rgba(245, 158, 11, 0.15); }
+
+        /* 12-Language AI Supporter Styles */
+        .ai-header-controls { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+        .ai-lang-select { background: #1f2937; color: #38bdf8; border: 1px solid #38bdf8; border-radius: 6px; padding: 3px 6px; font-size: 10px; font-weight: bold; outline: none; cursor: pointer; }
+        .ai-chat-history { height: 165px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding: 8px; background: #0b0f19; border-radius: 10px; border: 1px solid #1f2937; margin: 8px 0; font-size: 11px; }
+        .ai-msg { padding: 7px 10px; border-radius: 10px; max-width: 85%; line-height: 1.4; }
+        .ai-msg.bot { background: #1e293b; color: #e2e8f0; align-self: flex-start; border-left: 3px solid #38bdf8; }
+        .ai-msg.user { background: #2563eb; color: #ffffff; align-self: flex-end; }
+        .ai-quick-chips { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px; }
+        .ai-chip { background: #1f2937; border: 1px solid #38bdf8; color: #38bdf8; font-size: 10px; padding: 3px 8px; border-radius: 12px; cursor: pointer; }
+        .ai-chip:hover { background: #38bdf8; color: #050509; }
+    </style>
+</head>
+<body onload="initTikTokLiveArena()">
+
+    <!-- Gift Animation Popup -->
+    <div id="giftPopupOverlay">🎁 💎</div>
+
+    <!-- Gift Selection Modal -->
+    <div class="bottom-sheet-modal" id="giftModalPanel">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <span style="font-size: 13px; font-weight: bold; color: #f59e0b;">🎁 Send TikTok Live Gift</span>
+            <button onclick="document.getElementById('giftModalPanel').style.display='none'" style="background:none; border:none; color:#fff; font-size:14px; cursor:pointer;">✕</button>
+        </div>
+        <div class="gift-grid">
+            <div class="gift-item" onclick="sendSelectedGift('🌹 Rose (1 Coin)', '🌹')">🌹<div style="font-size:9px; color:#d1d5db;">1 Coin</div></div>
+            <div class="gift-item" onclick="sendSelectedGift('💎 Diamond (10 Coins)', '💎')">💎<div style="font-size:9px; color:#d1d5db;">10 Coins</div></div>
+            <div class="gift-item" onclick="sendSelectedGift('🦁 Lion (500 Coins)', '🦁')">🦁<div style="font-size:9px; color:#d1d5db;">500 Coins</div></div>
+            <div class="gift-item" onclick="sendSelectedGift('🚀 Universe (1000 Coins)', '🚀')">🚀<div style="font-size:9px; color:#d1d5db;">1000 Coins</div></div>
+        </div>
+    </div>
+
+    <!-- 12-Language AI Supporter Agent Modal -->
+    <div class="bottom-sheet-modal" id="aiSupporterModal">
+        <div class="ai-header-controls">
+            <span style="font-size: 12px; font-weight: bold; color: #38bdf8;">🤖 BIS Tech AI Supporter</span>
+            <div style="display: flex; align-items: center; gap: 6px;">
+                <select id="aiLanguageSelect" class="ai-lang-select" onchange="changeAILanguage()">
+                    <option value="am">🇪🇹 አማርኛ (Amharic)</option>
+                    <option value="en">🇺🇸 English</option>
+                    <option value="ar">🇸🇦 العربية (Arabic)</option>
+                    <option value="fr">🇫🇷 Français (French)</option>
+                    <option value="es">🇪🇸 Español (Spanish)</option>
+                    <option value="pt">🇵🇹 Português (Portuguese)</option>
+                    <option value="zh">🇨🇳 中文 (Chinese)</option>
+                    <option value="hi">🇮🇳 हिन्दी (Hindi)</option>
+                    <option value="ru">🇷🇺 Русский (Russian)</option>
+                    <option value="sw">🇰🇪 Kiswahili</option>
+                    <option value="ja">🇯🇵 日本語 (Japanese)</option>
+                    <option value="ko">🇰🇷 한국어 (Korean)</option>
+                </select>
+                <button onclick="document.getElementById('aiSupporterModal').style.display='none'" style="background:none; border:none; color:#fff; font-size:14px; cursor:pointer;">✕</button>
+            </div>
+        </div>
+
+        <div class="ai-chat-history" id="aiChatHistory">
+            <div class="ai-msg bot" id="aiWelcomeMsg">ሰላም! እኔ የ <b>BIS Tech AI Supporter</b> ነኝ። በ 12 ቋንቋዎች ማገዝ እችላለሁ — ስለ ሙዚቃ፣ ድምፅ፣ ጊፍት ወይም ፕላትፎርሙ ይጠይቁኝ!</div>
+        </div>
+
+        <div class="ai-quick-chips" id="aiQuickChips">
+            <span class="ai-chip" onclick="askQuickAI('music')">🎵 Music</span>
+            <span class="ai-chip" onclick="askQuickAI('audio')">🔊 Sound</span>
+            <span class="ai-chip" onclick="askQuickAI('gift')">🎁 Gift</span>
+            <span class="ai-chip" onclick="askQuickAI('about')">ℹ️ About</span>
+        </div>
+
+        <div style="display: flex; gap: 6px;">
+            <input type="text" id="aiUserInput" class="tiktok-chat-input" style="background: #1f2937;" placeholder="Ask anything in any language..." onkeypress="if(event.key==='Enter') handleAISupportQuery()">
+            <button class="music-upload-btn" style="padding: 6px 12px;" onclick="handleAISupportQuery()" id="aiSendBtn">Ask</button>
+        </div>
+    </div>
+
+    <header>
+        <div class="logo">🔴 BIS Tech TikTok Live Arena</div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="clips.html">Clips</a>
+            <a href="profile.html">Profile</a>
+            <a href="career.html">Career</a>
+            <a href="live.html" style="color: #38bdf8; font-weight: bold;">🔴 Live</a>
+            <a href="admin.html" style="color: #ef4444;">⚙️ Admin</a>
+            <button class="btn-logout" onclick="localStorage.removeItem('nova_authenticated'); window.location.href='login.html';">🚪 Logout</button>
+        </nav>
+    </header>
+
+    <div class="live-workspace">
+        <!-- TikTok Vertical Phone Frame Wrapper -->
+        <div class="tiktok-live-container">
+            
+            <!-- Top Header Overlay -->
+            <div class="tiktok-top-bar">
+                <div class="host-info-pill">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt="Host">
+                    <div>
+                        <div style="font-size: 10px; color: #38bdf8;">Miki Host</div>
+                        <span id="topFollowerCount">3.8K</span>
+                    </div>
+                    <button onclick="alert('Followed Host successfully! ❤️')">Follow</button>
+                </div>
+                
+                <div class="top-right-pills">
+                    <div class="live-viewer-badge">👁️ <span id="viewerCountDisplay">5,680</span></div>
+                    <!-- Settings & Report Button -->
+                    <div class="setting-report-btn" onclick="openSettingsReportMenu()" title="Settings & Report">⚙️</div>
+                </div>
+            </div>
+
+            <!-- Main Stream Video (Mic Active) -->
+            <video id="liveWebcamVideo" class="main-stream-video" autoplay playsinline></video>
+
+            <!-- Floating Comments Stream (Left Bottom) -->
+            <div class="tiktok-comments-overlay" id="tiktokCommentsBox">
+                <div class="t-comment-bubble"><b>Habesha_Vibe:</b> Welcome to Miki's live stream! 🔥</div>
+                <div class="t-comment-bubble"><b>Samuel_T:</b> Audio and sound controls are active now! 🔊</div>
+                <div class="t-comment-bubble"><b>Ethio_Girl:</b> Send gifts everyone! 💎🎁</div>
+            </div>
+
+            <!-- Right Side Action Buttons (AI Help, Audio Toggle, Invite, Gift, Share) -->
+            <div class="tiktok-right-actions">
+                <div class="side-action-btn ai-agent-btn" onclick="openAISupporter()" title="12-Language AI Supporter">
+                    🤖
+                    <span>AI Help</span>
+                </div>
+                <div class="side-action-btn" onclick="toggleStreamAudio()" id="audioToggleBtn" title="Mute/Unmute Audio">
+                    🔊
+                    <span id="audioStatusText">Sound</span>
+                </div>
+                <div class="side-action-btn" onclick="inviteUserToLiveModal()" title="Invite Friends">
+                    🔗
+                    <span>Invite</span>
+                </div>
+                <div class="side-action-btn" onclick="document.getElementById('giftModalPanel').style.display='block'" title="Send Gift">
+                    🎁
+                    <span>Gift</span>
+                </div>
+                <div class="side-action-btn" onclick="alert('🔗 Live stream link copied to clipboard!')" title="Share Live">
+                    ↗️
+                    <span>Share</span>
+                </div>
+            </div>
+
+            <!-- Bottom Cluster: Music Uploader + Chat Input Bar -->
+            <div class="bottom-control-cluster">
+                <!-- Custom Music Uploader Row (For your real original MP3 tracks) -->
+                <div class="music-upload-row">
+                    <span id="currentPlayingSongLabel" style="color: #38bdf8; font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 220px;">🎵 No Music Loaded</span>
+                    <div style="display: flex; gap: 5px; align-items: center;">
+                        <button class="music-upload-btn" onclick="toggleMusicPlayback()" id="musicPlayPauseBtn">▶ Play</button>
+                        <label class="music-upload-btn" for="userCustomMp3Input" style="background:#10b981;">📂 Add MP3</label>
+                        <input type="file" id="userCustomMp3Input" accept="audio/*" style="display: none;" onchange="loadUserCustomMp3(event)">
+                    </div>
+                </div>
+
+                <!-- Pure Audio Player Element -->
+                <audio id="liveAudioPlayerEngine" controls loop style="width: 100%; height: 26px; display: none;"></audio>
+
+                <!-- TikTok Chat Input Bar -->
+                <div class="tiktok-bottom-bar">
+                    <input type="text" class="tiktok-chat-input" id="tiktokChatInput" placeholder="Add a comment..." onkeypress="if(event.key==='Enter') sendTikTokComment()">
+                    <div class="t-action-icon-btn" onclick="document.getElementById('giftModalPanel').style.display='block'" title="Send Gift">🎁</div>
+                    <div class="t-action-icon-btn" onclick="sendTikTokComment()" title="Send">📤</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        let localStream = null;
+        let isAudioMuted = false;
+        let isMusicPlaying = false;
+        let currentAILang = 'am';
+
+        const aiTranslations = {
+            am: {
+                welcome: "ሰላም! እኔ የ <b>BIS Tech AI Supporter</b> ነኝ። በ 12 ቋንቋዎች ማገዝ እችላለሁ — ስለ ሙዚቃ፣ ድምፅ፣ ጊፍት ወይም ፕላትፎርሙ ይጠይቁኝ!",
+                placeholder: "ጥያቄዎን በአማርኛ ወይም በሌላ ቋንቋ ይጻፉ...",
+                send: "ጠይቅ",
+                music: "🎵 ከታች ያለውን አረንጓዴ <b>📂 Add MP3</b> በመጫን የራስዎን MP3 ዘፈን መርጠው ማጫወት ይችላሉ።",
+                audio: "🔊 በቀኝ በኩል ያለውን <b>🔊 Sound</b> ይጫኑ እና የማይክሮፎን/ኦዲዮ ፈቃድ ይስጡ።",
+                gift: "🎁 የ <b>🎁 Gift</b> ቁልፍን በመንካት Rose፣ Diamond፣ Lion ወይም Universe መላክ ይችላሉ።",
+                about: "🚀 <b>BIS Tech</b> የቀጥታ ስርጭት (Live)፣ ቪዲዮ እና የድጋፍ ፕላትፎርም ነው።",
+                fallback: "ጥያቄዎን ተቀብያለሁ! ስለ ሙዚቃ (MP3)፣ ድምፅ (Sound)፣ ጊፍት (Gift) ወይም ስለ BIS Tech መጠየቅ ይችላሉ።"
+            },
+            en: {
+                welcome: "Hello! I am the <b>BIS Tech AI Supporter</b>. I support 12 languages — ask me about MP3 music, sound, gifts, or the platform!",
+                placeholder: "Type your question in English or any language...",
+                send: "Ask",
+                music: "🎵 Click the green <b>📂 Add MP3</b> button at the bottom to load and play your MP3 track.",
+                audio: "🔊 Tap <b>🔊 Sound</b> on the right to toggle mute/unmute and allow browser audio permissions.",
+                gift: "🎁 Tap <b>🎁 Gift</b> to send Rose, Diamond, Lion, or Universe gifts with live animations.",
+                about: "🚀 <b>BIS Tech</b> is a live streaming, media, and community support platform.",
+                fallback: "Got it! Ask me about MP3 music, sound/mute, gifts, or BIS Tech."
+            },
+            ar: {
+                welcome: "مرحباً! أنا مساعد <b>BIS Tech AI Supporter</b> وأدعم 12 لغة — اسألني عن الموسيقى أو الصوت أو الهدايا أو المنصة!",
+                placeholder: "اكتب سؤالك بأي لغة...",
+                send: "اسأل",
+                music: "🎵 اضغط على زر <b>📂 Add MP3</b> الأخضر بالأسفل لاختيار وتشغيل ملف MP3.",
+                audio: "🔊 اضغط على <b>🔊 Sound</b> لفتح أو كتم الصوت والتأكد من أذونات المتصفح.",
+                gift: "🎁 اضغط على <b>🎁 Gift</b> لإرسال هدايا Rose أو Diamond أو Lion أو Universe.",
+                about: "🚀 <b>BIS Tech</b> منصة بث مباشر ودعم للمستخدمين.",
+                fallback: "تم استلام سؤالك! يمكنك السؤال عن الموسيقى أو الصوت أو الهدايا أو BIS Tech."
+            },
+            fr: {
+                welcome: "Bonjour ! Je suis <b>BIS Tech AI Supporter</b> (12 langues). Posez vos questions sur l'audio MP3, le son, les cadeaux ou la plateforme !",
+                placeholder: "Écrivez votre question...",
+                send: "Envoyer",
+                music: "🎵 Cliquez sur <b>📂 Add MP3</b> en bas pour charger et lire votre fichier audio.",
+                audio: "🔊 Utilisez <b>🔊 Sound</b> à droite pour activer ou couper le son.",
+                gift: "🎁 Appuyez sur <b>🎁 Gift</b> pour envoyer Rose, Diamond, Lion ou Universe.",
+                about: "🚀 <b>BIS Tech</b> est une plateforme de streaming live et d'assistance.",
+                fallback: "Message reçu ! Demandez-moi de l'aide sur la musique MP3, le son, les cadeaux ou BIS Tech."
+            },
+            es: {
+                welcome: "¡Hola! Soy <b>BIS Tech AI Supporter</b> (12 idiomas). Pregúntame sobre música MP3, sonido, regalos o la plataforma.",
+                placeholder: "Escribe tu pregunta...",
+                send: "Preguntar",
+                music: "🎵 Pulsa <b>📂 Add MP3</b> abajo para cargar y reproducir tu archivo MP3.",
+                audio: "🔊 Pulsa <b>🔊 Sound</b> a la derecha para activar o silenciar el audio.",
+                gift: "🎁 Pulsa <b>🎁 Gift</b> para enviar Rose, Diamond, Lion o Universe.",
+                about: "🚀 <b>BIS Tech</b> es una plataforma de transmisión en vivo y soporte.",
+                fallback: "¡Entendido! Pregúntame sobre música MP3, sonido, regalos o BIS Tech."
+            },
+            pt: {
+                welcome: "Olá! Sou o <b>BIS Tech AI Supporter</b> (12 idiomas). Pergunte sobre MP3, áudio, presentes ou a plataforma.",
+                placeholder: "Digite sua pergunta...",
+                send: "Perguntar",
+                music: "🎵 Clique em <b>📂 Add MP3</b> embaixo para carregar e tocar seu arquivo MP3.",
+                audio: "🔊 Toque em <b>🔊 Sound</b> à direita para ativar ou mutar o áudio.",
+                gift: "🎁 Toque em <b>🎁 Gift</b> para enviar Rose, Diamond, Lion ou Universe.",
+                about: "🚀 <b>BIS Tech</b> é uma plataforma de live e suporte.",
+                fallback: "Recebido! Pergunte sobre música MP3, som, presentes ou BIS Tech."
+            },
+            zh: {
+                welcome: "你好！我是 <b>BIS Tech AI Supporter</b>（支持12种语言）。你可以问我关于MP3音乐、声音、礼物或平台的问题！",
+                placeholder: "输入你的问题...",
+                send: "提问",
+                music: "🎵 点击底部的绿色 <b>📂 Add MP3</b> 按钮即可上传并播放 MP3 音乐。",
+                audio: "🔊 点击右侧的 <b>🔊 Sound</b> 切换静音/取消静音并允许浏览器音频权限。",
+                gift: "🎁 点击 <b>🎁 Gift</b> 发送 Rose、Diamond、Lion 或 Universe 礼物。",
+                about: "🚀 <b>BIS Tech</b> 是一个直播与支持平台。",
+                fallback: "已收到！你可以咨询 MP3 音乐、声音、礼物或 BIS Tech。"
+            },
+            hi: {
+                welcome: "नमस्ते! मैं <b>BIS Tech AI Supporter</b> हूँ (12 भाषाएँ)। MP3 संगीत, साउंड, गिफ्ट या प्लेटफ़ॉर्म के बारे में पूछें।",
+                placeholder: "अपना सवाल लिखें...",
+                send: "पूछें",
+                music: "🎵 नीचे हरे <b>📂 Add MP3</b> बटन पर क्लिक करके MP3 गाना चलाएँ।",
+                audio: "🔊 दाईं ओर <b>🔊 Sound</b> दबाकर साउंड ऑन/म्यूट करें।",
+                gift: "🎁 <b>🎁 Gift</b> दबाकर Rose, Diamond, Lion या Universe भेजें।",
+                about: "🚀 <b>BIS Tech</b> एक लाइव स्ट्रीमिंग और सहायता प्लेटफ़ॉर्म है।",
+                fallback: "समझ गया! MP3 संगीत, साउंड, गिफ्ट या BIS Tech के बारे में पूछें।"
+            },
+            ru: {
+                welcome: "Привет! Я <b>BIS Tech AI Supporter</b> (12 языков). Спросите о музыке MP3, звуке, подарках или платформе.",
+                placeholder: "Введите ваш вопрос...",
+                send: "Спросить",
+                music: "🎵 Нажмите зелёную кнопку <b>📂 Add MP3</b> внизу, чтобы загрузить и включить MP3.",
+                audio: "🔊 Нажмите <b>🔊 Sound</b> справа, чтобы включить или выключить звук.",
+                gift: "🎁 Нажмите <b>🎁 Gift</b>, чтобы отправить Rose, Diamond, Lion или Universe.",
+                about: "🚀 <b>BIS Tech</b> — платформа прямых эфиров и поддержки.",
+                fallback: "Принято! Спросите про MP3, звук, подарки или BIS Tech."
+            },
+            sw: {
+                welcome: "Hujambo! Mimi ni <b>BIS Tech AI Supporter</b> (lugha 12). Niulize kuhusu muziki wa MP3, sauti, zawadi au jukwaa.",
+                placeholder: "Andika swali lako...",
+                send: "Uliza",
+                music: "🎵 Bonyeza <b>📂 Add MP3</b> chini ili kupakia na kucheza wimbo wa MP3.",
+                audio: "🔊 Bonyeza <b>🔊 Sound</b> kulia kuwasha au kuzima sauti.",
+                gift: "🎁 Bonyeza <b>🎁 Gift</b> kutuma zawadi za Rose, Diamond, Lion au Universe.",
+                about: "🚀 <b>BIS Tech</b> ni jukwaa la matangazo ya moja kwa moja na usaidizi.",
+                fallback: "Nimepokea! Uliza kuhusu muziki wa MP3, sauti, zawadi au BIS Tech."
+            },
+            ja: {
+                welcome: "こんにちは！私は <b>BIS Tech AI Supporter</b>（12言語対応）です。MP3音楽、音声、ギフト、プラットフォームについて質問してください。",
+                placeholder: "質問を入力してください...",
+                send: "送信",
+                music: "🎵 下の緑の <b>📂 Add MP3</b> からMP3を読み込んで再生できます。",
+                audio: "🔊 右側の <b>🔊 Sound</b> で音声のミュート/解除を切り替えられます。",
+                gift: "🎁 <b>🎁 Gift</b> から Rose、Diamond、Lion、Universe を送れます。",
+                about: "🚀 <b>BIS Tech</b> はライブ配信とサポートのプラットフォームです。",
+                fallback: "了解しました！MP3音楽、音声、ギフト、BIS Techについてお尋ねください。"
+            },
+            ko: {
+                welcome: "안녕하세요! 저는 <b>BIS Tech AI Supporter</b>(12개 언어 지원)입니다. MP3 음악, 사운드, 선물 또는 플랫폼에 대해 물어보세요.",
+                placeholder: "질문을 입력하세요...",
+                send: "질문",
+                music: "🎵 아래 초록색 <b>📂 Add MP3</b> 버튼으로 MP3를 추가하고 재생할 수 있습니다.",
+                audio: "🔊 오른쪽 <b>🔊 Sound</b>로 음소거/음소거 해제를 전환할 수 있습니다.",
+                gift: "🎁 <b>🎁 Gift</b>를 눌러 Rose, Diamond, Lion, Universe 선물을 보내세요.",
+                about: "🚀 <b>BIS Tech</b>는 라이브 스트리밍 및 지원 플랫폼입니다.",
+                fallback: "확인했습니다! MP3 음악, 사운드, 선물 또는 BIS Tech에 대해 물어보세요."
+            }
+        };
+
+        async function initTikTokLiveArena() {
+            try {
+                localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                let videoElement = document.getElementById('liveWebcamVideo');
+                videoElement.srcObject = localStream;
+                videoElement.muted = false; 
+            } catch(e) {
+                console.log("Webcam simulation active.");
+            }
+
+            setInterval(() => {
+                let count = Math.floor(Math.random() * 150) + 5600;
+                document.getElementById('viewerCountDisplay').innerText = count.toLocaleString();
+            }, 4000);
+        }
+
+        function openAISupporter() {
+            document.getElementById('aiSupporterModal').style.display = 'block';
+        }
+
+        function changeAILanguage() {
+            currentAILang = document.getElementById('aiLanguageSelect').value;
+            const pack = aiTranslations[currentAILang] || aiTranslations.en;
+            document.getElementById('aiWelcomeMsg').innerHTML = pack.welcome;
+            document.getElementById('aiUserInput').placeholder = pack.placeholder;
+            document.getElementById('aiSendBtn').innerText = pack.send;
+        }
+
+        function askQuickAI(topicKey) {
+            const pack = aiTranslations[currentAILang] || aiTranslations.en;
+            const labelMap = { music: "🎵 MP3", audio: "🔊 Sound", gift: "🎁 Gift", about: "ℹ️ BIS Tech" };
+            const history = document.getElementById('aiChatHistory');
+            history.insertAdjacentHTML('beforeend', `<div class="ai-msg user">${labelMap[topicKey] || topicKey}</div>`);
+            setTimeout(() => {
+                history.insertAdjacentHTML('beforeend', `<div class="ai-msg bot">${pack[topicKey] || pack.fallback}</div>`);
+                history.scrollTop = history.scrollHeight;
+            }, 250);
+        }
+
+        function handleAISupportQuery() {
+            const input = document.getElementById('aiUserInput');
+            const history = document.getElementById('aiChatHistory');
+            const text = input.value.trim();
+            if (!text) return;
+
+            history.insertAdjacentHTML('beforeend', `<div class="ai-msg user">${text}</div>`);
+            input.value = '';
+
+            const q = text.toLowerCase();
+            const pack = aiTranslations[currentAILang] || aiTranslations.en;
+            let reply = pack.fallback;
+
+            if (q.includes('ሙዚቃ') || q.includes('mp3') || q.includes('music') || q.includes('song') || q.includes('موسيقى') || q.includes('musique') || q.includes('música') || q.includes('音乐') || q.includes('संगीत') || q.includes('музык') || q.includes('muziki') || q.includes('音楽') || q.includes('음악')) {
+                reply = pack.music;
+            } else if (q.includes('ድምፅ') || q.includes('mute') || q.includes('sound') || q.includes('audio') || q.includes('صوت') || q.includes('son') || q.includes('sonido') || q.includes('声音') || q.includes('साउंड') || q.includes('звук') || q.includes('sauti') || q.includes('音声') || q.includes('사운드')) {
+                reply = pack.audio;
+            } else if (q.includes('ጊፍት') || q.includes('ስጦታ') || q.includes('gift') || q.includes('هدية') || q.includes('cadeau') || q.includes('regalo') || q.includes('presente') || q.includes('礼物') || q.includes('गिफ्ट') || q.includes('подар') || q.includes('zawadi') || q.includes('ギフト') || q.includes('선물')) {
+                reply = pack.gift;
+            } else if (q.includes('bis') || q.includes('about') || q.includes('ፕላትፎርም') || q.includes('منصة') || q.includes('plateforme') || q.includes('plataforma') || q.includes('平台') || q.includes('प्लेटफ़ॉर्म') || q.includes('платформ') || q.includes('jukwaa') || q.includes('プラットフォーム') || q.includes('플랫폼')) {
+                reply = pack.about;
+            }
+
+            setTimeout(() => {
+                history.insertAdjacentHTML('beforeend', `<div class="ai-msg bot">${reply}</div>`);
+                history.scrollTop = history.scrollHeight;
+            }, 300);
+        }
+
+        // Toggle Sound Mute / Unmute for Video Stream
+        function toggleStreamAudio() {
+            let videoElement = document.getElementById('liveWebcamVideo');
+            let iconBtn = document.getElementById('audioToggleBtn');
+            let statusText = document.getElementById('audioStatusText');
+
+            isAudioMuted = !isAudioMuted;
+            videoElement.muted = isAudioMuted;
+
+            if(isAudioMuted) {
+                iconBtn.style.background = "#dc2626";
+                statusText.innerText = "Muted";
+                alert("🔇 Stream Audio Muted.");
+            } else {
+                iconBtn.style.background = "rgba(0, 0, 0, 0.55)";
+                statusText.innerText = "Sound";
+                alert("🔊 Stream Audio Unmuted & Active.");
+            }
+        }
+
+        // Load and Play User Custom MP3 Song
+        function loadUserCustomMp3(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const fileUrl = URL.createObjectURL(file);
+            const audioPlayer = document.getElementById('liveAudioPlayerEngine');
+            audioPlayer.style.display = 'block';
+            audioPlayer.src = fileUrl;
+            audioPlayer.play().then(() => {
+                isMusicPlaying = true;
+                document.getElementById('musicPlayPauseBtn').innerText = "⏸ Pause";
+            }).catch(e => console.log("Audio play restricted."));
+
+            document.getElementById('currentPlayingSongLabel').innerHTML = `🎵 Playing: <b>${file.name}</b>`;
+
+            let box = document.getElementById('tiktokCommentsBox');
+            box.insertAdjacentHTML('beforeend', `<div class="t-comment-bubble" style="background:rgba(56,189,248,0.25);"><b>Music Bot:</b> 🎧 Loaded track <b>${file.name}</b> live!</div>`);
+            box.scrollTop = box.scrollHeight;
+        }
+
+        // Toggle Music Play / Pause
+        function toggleMusicPlayback() {
+            const audioPlayer = document.getElementById('liveAudioPlayerEngine');
+            const btn = document.getElementById('musicPlayPauseBtn');
+
+            if(!audioPlayer.src) {
+                alert("⚠️ Please add an MP3 song first using 'Add MP3' button!");
+                return;
+            }
+
+            if(isMusicPlaying) {
+                audioPlayer.pause();
+                isMusicPlaying = false;
+                btn.innerText = "▶ Play";
+            } else {
+                audioPlayer.play();
+                isMusicPlaying = true;
+                btn.innerText = "⏸ Pause";
+            }
+        }
+
+        // Send Comment in TikTok Style
+        function sendTikTokComment() {
+            let input = document.getElementById('tiktokChatInput');
+            let text = input.value.trim();
+            if(!text) return;
+
+            let box = document.getElementById('tiktokCommentsBox');
+            box.insertAdjacentHTML('beforeend', `<div class="t-comment-bubble"><b>You:</b> ${text}</div>`);
+            input.value = "";
+            box.scrollTop = box.scrollHeight;
+        }
+
+        // Send Gift with Animation
+        function sendSelectedGift(giftName, emoji) {
+            document.getElementById('giftModalPanel').style.display = 'none';
+            let popup = document.getElementById('giftPopupOverlay');
+            popup.innerHTML = emoji;
+            popup.style.display = 'block';
+            setTimeout(() => { popup.style.display = 'none'; }, 1500);
+
+            let box = document.getElementById('tiktokCommentsBox');
+            box.insertAdjacentHTML('beforeend', `<div class="t-comment-bubble" style="background:rgba(245,158,11,0.25); border:1px solid #f59e0b;"><b>Gift Alert:</b> You sent <b>${giftName}</b>! 🎉</div>`);
+            box.scrollTop = box.scrollHeight;
+        }
+
+        // Invite Button Action
+        function inviteUserToLiveModal() {
+            let username = prompt("🔗 Enter friend username or ID to invite to this LIVE stream:");
+            if(username) {
+                alert(`Invitation sent to "${username}" successfully!`);
+                let box = document.getElementById('tiktokCommentsBox');
+                box.insertAdjacentHTML('beforeend', `<div class="t-comment-bubble"><b>System:</b> Invitation sent to <b>${username}</b> 🔗</div>`);
+                box.scrollTop = box.scrollHeight;
+            }
+        }
+
+        // Settings & Report Button Action
+        function openSettingsReportMenu() {
+            let choice = prompt("⚙️ LIVE SETTINGS & REPORT:\n1. Report Live Stream\n2. Stream Quality Settings\n3. Mute/Block User\nEnter option number (1-3):");
+            if(choice === "1") {
+                alert("🚨 Live stream reported to BIS Tech moderation team successfully.");
+            } else if(choice === "2") {
+                alert("⚙️ Stream quality set to High Definition (HD 1080p).");
+            } else if(choice === "3") {
+                alert("🚫 User restriction settings updated.");
+            }
+        }
+    </script>
+</body>
+</html>

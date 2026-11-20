@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BIS Tech | Admin Command Dashboard</title>
+    <script>
+        if (localStorage.getItem('nova_authenticated') !== 'true') { window.location.href = "login.html"; }
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { 
+            background: linear-gradient(rgba(11, 15, 25, 0.88), rgba(11, 15, 25, 0.94)), url('https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1920&q=80') center/cover fixed;
+            color: #ffffff; line-height: 1.6; 
+        }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 6%; background: rgba(17, 24, 39, 0.92); backdrop-filter: blur(8px); border-bottom: 1px solid #1f2937; position: sticky; top: 0; z-index: 100; flex-wrap: wrap; gap: 10px; }
+        .logo { font-size: 24px; font-weight: bold; color: #38bdf8; }
+        nav { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+        nav a { color: #d1d5db; text-decoration: none; font-size: 13px; font-weight: 500; }
+        nav a:hover { color: #38bdf8; }
+        .btn-logout { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid #ef4444; padding: 4px 10px; border-radius: 6px; font-size: 12px; cursor: pointer; font-weight: bold; }
+        .container { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
+        .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .metric-card { background: rgba(17, 24, 39, 0.88); border: 1px solid #1f2937; border-radius: 12px; padding: 20px; }
+        .metric-title { font-size: 12px; color: #9ca3af; text-transform: uppercase; }
+        .metric-value { font-size: 24px; font-weight: bold; color: #38bdf8; margin: 8px 0; }
+    </style>
+</head>
+<body onload="loadAdminMetrics()">
+    <header>
+        <div class="logo">BIS Admin 🛡️</div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="clips.html">Clips</a>
+            <a href="live.html">Live</a>
+            <a href="payment.html">VIP Checkout</a>
+            <a href="admin.html" style="color: #ef4444; font-weight: bold;">⚙️ Admin</a>
+            <button class="btn-logout" onclick="localStorage.removeItem('nova_authenticated'); window.location.href='login.html';">🚪 Logout</button>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h2>⚙️ Admin Command Center — Welcome Miki 🚀</h2>
+        <p style="font-size: 13px; color: #9ca3af; margin-bottom: 20px;">Real-time oversight of 15% platform commissions from live gifts, checkouts, and optional VIP subscriptions under BIS Tech.</p>
+
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-title">Platform Commission (15%)</div>
+                <div class="metric-value" id="adminRevenueDisplay">1,850.00 ETB</div>
+                <div style="font-size: 11px; color: #10b981;">↑ Live sync from Gifts & VIP plans</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">Registered BIS Users</div>
+                <div class="metric-value">1,480</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">Active VIP Members</div>
+                <div class="metric-value" style="color: #38bdf8;">320</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function loadAdminMetrics() {
+            const rev = localStorage.getItem('nova_total_revenue') || '1850';
+            document.getElementById('adminRevenueDisplay').innerText = parseInt(rev).toLocaleString() + ".00 ETB";
+        }
+    </script>
+</body>
+</html>

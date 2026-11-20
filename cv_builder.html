@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BIS Tech | AI Professional CV Studio (30 ETB VIP Checkout)</title>
+    <script>
+        if (localStorage.getItem('nova_authenticated') !== 'true') { window.location.href = "login.html"; }
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        body { background: #0b0f19; color: #ffffff; line-height: 1.5; }
+        
+        header { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: rgba(17, 24, 39, 0.94); border-bottom: 1px solid #1f2937; position: sticky; top: 0; z-index: 100; flex-wrap: wrap; gap: 10px; }
+        .logo { font-size: 20px; font-weight: bold; color: #38bdf8; }
+        nav { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+        nav a { color: #d1d5db; text-decoration: none; font-size: 13px; font-weight: 500; }
+        nav a:hover, nav a.active { color: #38bdf8; }
+        .btn-logout { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid #ef4444; padding: 4px 10px; border-radius: 6px; font-size: 12px; cursor: pointer; font-weight: bold; }
+
+        .cv-container { max-width: 1000px; margin: 30px auto; padding: 0 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        @media(max-width: 850px) { .cv-container { grid-template-columns: 1fr; } }
+
+        .form-card, .preview-card { background: #111827; border: 1px solid #1f2937; border-radius: 12px; padding: 25px; }
+        .card-title { font-size: 18px; font-weight: bold; color: #38bdf8; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+        
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 12px; color: #9ca3af; margin-bottom: 5px; }
+        .form-group input, .form-group textarea { width: 100%; background: #1f2937; border: 1px solid #374151; border-radius: 6px; padding: 10px; color: white; font-size: 13px; outline: none; }
+        
+        .btn-generate { background: linear-gradient(135deg, #2563eb, #38bdf8); color: white; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 14px; width: 100%; margin-top: 10px; }
+        .btn-generate:hover { opacity: 0.9; }
+
+        /* CV Live Preview Box */
+        .cv-preview-box { background: #ffffff; color: #111827; border-radius: 8px; padding: 30px; min-height: 450px; font-size: 13px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        .cv-header { border-bottom: 2px solid #2563eb; padding-bottom: 15px; margin-bottom: 15px; }
+        .cv-name { font-size: 22px; font-weight: bold; color: #1e3a8a; }
+        .cv-contact { font-size: 11px; color: #4b5563; margin-top: 4px; }
+        .cv-section-title { font-size: 14px; font-weight: bold; color: #1e3a8a; border-bottom: 1px solid #e5e7eb; padding-bottom: 3px; margin-top: 15px; margin-bottom: 8px; text-transform: uppercase; }
+        .cv-tags-row { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 5px; }
+        .cv-tag { background: #e0f2fe; color: #0369a1; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; }
+        .cv-watermark { text-align: center; font-size: 10px; color: #9ca3af; margin-top: 25px; border-top: 1px dashed #e5e7eb; padding-top: 10px; }
+        
+        .btn-print { background: #10b981; color: white; border: none; padding: 10px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 13px; margin-top: 15px; width: 100%; display: none; }
+
+        /* Payment Modal Overlay */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
+        .modal-content { background: #111827; border: 1px solid #374151; border-radius: 12px; width: 100%; max-width: 450px; padding: 25px; text-align: center; }
+        .payment-box { background: #1f2937; border: 1px solid #374151; border-radius: 8px; padding: 15px; margin: 15px 0; text-align: left; font-size: 13px; color: #d1d5db; }
+    </style>
+</head>
+<body onload="updateCVPreview()">
+    <header>
+        <div class="logo">BIS Tech 🤖 AI CV Studio</div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="career.html">Jobs</a>
+            <a href="companies.html">Companies</a>
+            <a href="cv_builder.html" style="color: #38bdf8; font-weight: bold;">📄 AI CV Builder</a>
+            <a href="chat.html">Messages</a>
+            <a href="admin.html" style="color: #ef4444;">⚙️ Admin</a>
+            <button class="btn-logout" onclick="localStorage.removeItem('nova_authenticated'); window.location.href='login.html';">🚪 Logout</button>
+        </nav>
+    </header>
+
+    <div class="cv-container">
+        <!-- Input Form Card -->
+        <div class="form-card">
+            <div class="card-title">✨ AI Prompt & Details</div>
+            <div class="form-group"><label>Full Name *</label><input type="text" id="inputName" value="Mikias Mamo" oninput="updateCVPreview()"></div>
+            <div class="form-group"><label>Professional Title *</label><input type="text" id="inputTitle" value="Senior IT Support & Fullstack Developer" oninput="updateCVPreview()"></div>
+            <div class="form-group"><label>Email & Phone *</label><input type="text" id="inputContact" value="miki@bistech.ai | +251 900 000 000" oninput="updateCVPreview()"></div>
+            <div class="form-group"><label>Summary *</label><textarea id="inputSummary" rows="2" oninput="updateCVPreview()">Motivated IT professional with expertise in network servicing and full-stack web platforms.</textarea></div>
+            <div class="form-group"><label>Key Skills *</label><input type="text" id="inputSkills" value="Python, Network Security, CVAT, React, Windows Server" oninput="updateCVPreview()"></div>
+            <div class="form-group"><label>Experience *</label><textarea id="inputExp" rows="2" oninput="updateCVPreview()">- Developed Best Life Solutions (BIS Tech) ecosystem.\n- Executed computer vision annotation workflows.</textarea></div>
+
+            <button class="btn-generate" onclick="openPaymentModal()">💳 Pay 30 ETB & Generate #bestcv</button>
+        </div>
+
+        <!-- Live Preview Card -->
+        <div class="preview-card">
+            <div class="card-title">
+                <span>📋 CV Preview</span>
+                <span style="font-size: 11px; color: #10b981;" id="paymentStatusBadge">🔒 Locked (30 ETB Fee)</span>
+            </div>
+
+            <div class="cv-preview-box" id="cvPreviewArea" style="filter: blur(4px); transition: 0.3s;">
+                <div class="cv-header">
+                    <div class="cv-name" id="prevName">Mikias Mamo</div>
+                    <div class="cv-contact" id="prevTitle"><b>Senior IT Support & Fullstack Developer</b></div>
+                    <div class="cv-contact" id="prevContact">miki@bistech.ai | +251 900 000 000</div>
+                </div>
+
+                <div class="cv-section-title">Professional Summary</div>
+                <div id="prevSummary" style="font-size: 12px; color: #374151; line-height: 1.4;"></div>
+
+                <div class="cv-section-title">Core Skills</div>
+                <div class="cv-tags-row" id="prevSkills"></div>
+
+                <div class="cv-section-title">Experience & Projects</div>
+                <div id="prevExp" style="font-size: 12px; color: #374151; white-space: pre-line; line-height: 1.4;"></div>
+
+                <div class="cv-watermark">
+                    Generated by <b>BIS Tech AI Engine</b> • #best #bestcv #procv 🚀
+                </div>
+            </div>
+
+            <button class="btn-print" id="downloadPdfBtn" onclick="window.print()">📥 Download / Export PDF CV</button>
+        </div>
+    </div>
+
+    <!-- 30 ETB Payment Checkout Modal -->
+    <div class="modal-overlay" id="paymentModal">
+        <div class="modal-content">
+            <h3 style="color: #38bdf8; margin-bottom: 10px;">💳 30 ETB AI CV Generation Fee</h3>
+            <p style="font-size: 12px; color: #9ca3af; margin-bottom: 15px;">To unlock and download your verified #bestcv, please transfer <b>30 ETB</b> to the official creator account below:</p>
+            
+            <div class="payment-box">
+                <div><b>🏦 Bank:</b> Commercial Bank of Ethiopia (CBE)</div>
+                <div><b>👤 Account Name:</b> Mikias Mamo</div>
+                <div style="margin-top: 6px; font-size: 15px; color: #38bdf8;"><b>🔢 Account Number: 1000769638362</b></div>
+            </div>
+
+            <div class="form-group" style="text-align: left;">
+                <label>Enter Telebirr / CBE Transaction Reference (TxID) *</label>
+                <input type="text" id="txIdInput" placeholder="e.g. FT2639102834">
+            </div>
+
+            <div style="display: flex; gap: 10px; margin-top: 15px;">
+                <button class="btn-generate" style="margin-top: 0; flex: 1;" onclick="verifyAndUnlockCV()">Verify & Unlock 🚀</button>
+                <button class="btn-generate" style="margin-top: 0; flex: 1; background: #374151;" onclick="closePaymentModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateCVPreview() {
+            document.getElementById('prevName').innerText = document.getElementById('inputName').value;
+            document.getElementById('prevTitle').innerHTML = `<b>${document.getElementById('inputTitle').value}</b>`;
+            document.getElementById('prevContact').innerText = document.getElementById('inputContact').value;
+            document.getElementById('prevSummary').innerText = document.getElementById('inputSummary').value;
+            document.getElementById('prevExp').innerText = document.getElementById('inputExp').value;
+
+            let skills = document.getElementById('inputSkills').value.split(',');
+            let tagsHTML = '';
+            skills.forEach(s => { if(s.trim()) tagsHTML += `<span class="cv-tag">${s.trim()}</span>`; });
+            document.getElementById('prevSkills').innerHTML = tagsHTML;
+        }
+
+        function openPaymentModal() {
+            updateCVPreview();
+            document.getElementById('paymentModal').style.display = 'flex';
+        }
+
+        function closePaymentModal() {
+            document.getElementById('paymentModal').style.display = 'none';
+        }
+
+        function verifyAndUnlockCV() {
+            let txId = document.getElementById('txIdInput').value.trim();
+            if(!txId) {
+                return alert("⚠️ Please enter your payment Transaction ID (TxID) to verify transfer.");
+            }
+
+            // Unlock CV preview and show download button
+            document.getElementById('cvPreviewArea').style.filter = 'none';
+            document.getElementById('paymentStatusBadge').innerText = "🟢 Unlocked & Verified";
+            document.getElementById('paymentStatusBadge').style.color = "#10b981";
+            document.getElementById('downloadPdfBtn').style.display = 'block';
+
+            closePaymentModal();
+            alert("🎉 Payment of 30 ETB successfully verified! Transferred to Mikias Mamo (CBE: 1000769638362). You can now export your #bestcv.");
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BIS Tech | Ethiopian Live Job Portal & Bot System</title>
+    <script>
+        if (localStorage.getItem('nova_authenticated') !== 'true') { window.location.href = "login.html"; }
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        body { background: #0b0f19; color: #ffffff; line-height: 1.5; }
+        
+        /* Navigation Header */
+        header { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: rgba(17, 24, 39, 0.94); border-bottom: 1px solid #1f2937; position: sticky; top: 0; z-index: 100; flex-wrap: wrap; gap: 10px; }
+        .logo { font-size: 20px; font-weight: bold; color: #38bdf8; }
+        nav { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+        nav a { color: #d1d5db; text-decoration: none; font-size: 13px; font-weight: 500; }
+        nav a:hover, nav a.active { color: #38bdf8; }
+        .btn-logout { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid #ef4444; padding: 4px 10px; border-radius: 6px; font-size: 12px; cursor: pointer; font-weight: bold; }
+
+        /* Main Container */
+        .portal-container { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
+        
+        /* Top Hero Banner & Bot Status */
+        .hero-banner { background: linear-gradient(135deg, #1e293b, #0f172a); border: 1px solid #334155; border-radius: 12px; padding: 25px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .hero-title { font-size: 20px; font-weight: bold; color: #38bdf8; margin-bottom: 5px; }
+        .hero-desc { font-size: 13px; color: #cbd5e1; }
+        .bot-badge { background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; color: #10b981; padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: bold; display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+        
+        /* Action Bar */
+        .action-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px; }
+        .search-box { flex-grow: 1; max-width: 500px; background: #111827; border: 1px solid #1f2937; border-radius: 8px; padding: 10px 15px; display: flex; align-items: center; gap: 10px; }
+        .search-box input { width: 100%; background: transparent; border: none; outline: none; color: white; font-size: 13px; }
+        .btn-primary { background: #2563eb; color: white; border: none; padding: 10px 18px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 13px; transition: 0.2s; white-space: nowrap; }
+        .btn-primary:hover { background: #1d4ed8; }
+
+        /* Categories Filter Row - Fixed & Clean Layout */
+        .categories-wrapper { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 25px; align-items: center; }
+        .cat-chip { background: #111827; border: 1px solid #1f2937; padding: 8px 14px; border-radius: 20px; font-size: 12px; color: #d1d5db; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 5px; }
+        .cat-chip:hover, .cat-chip.active { background: #38bdf8; color: #000; font-weight: bold; border-color: #38bdf8; }
+
+        /* Jobs Grid List */
+        .jobs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+        .job-card { background: #111827; border: 1px solid #1f2937; border-radius: 10px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; transition: 0.2s; }
+        .job-card:hover { border-color: #38bdf8; transform: translateY(-2px); }
+        
+        .job-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 15px; }
+        .company-logo { width: 42px; height: 42px; background: #1e293b; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: bold; color: #38bdf8; flex-shrink: 0; border: 1px solid #334155; }
+        .job-title { font-size: 15px; font-weight: bold; color: #ffffff; margin-bottom: 3px; }
+        .company-name { font-size: 13px; color: #38bdf8; font-weight: 500; }
+        
+        .job-details-list { font-size: 12px; color: #9ca3af; display: flex; flex-direction: column; gap: 5px; margin-bottom: 15px; }
+        .job-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 15px; }
+        .job-tag { background: rgba(56, 189, 248, 0.1); color: #38bdf8; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; }
+
+        .job-card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #1f2937; padding-top: 12px; }
+        .job-date { font-size: 11px; color: #6b7280; }
+        .btn-apply { background: #10b981; color: white; border: none; padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: bold; cursor: pointer; }
+        .btn-apply:hover { background: #059669; }
+
+        /* Modal */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
+        .modal-content { background: #111827; border: 1px solid #374151; border-radius: 12px; width: 100%; max-width: 500px; padding: 25px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 12px; color: #d1d5db; margin-bottom: 5px; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; background: #1f2937; border: 1px solid #374151; border-radius: 6px; padding: 10px; color: white; font-size: 13px; outline: none; }
+    </style>
+</head>
+<body onload="loadLiveJobsPortal()">
+    <header>
+        <div class="logo">BIS Tech 🇪🇹 Jobs</div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="clips.html">Clips</a>
+            <a href="profile.html">Profile</a>
+            <a href="career.html" style="color: #38bdf8; font-weight: bold;">💼 Career Portal</a>
+            <a href="companies.html">Companies</a>
+            <a href="cv_builder.html">📄 AI CV Builder</a>
+            <a href="chat.html">Messages</a>
+            <a href="live.html">Live</a>
+            <a href="admin.html" style="color: #ef4444;">⚙️ Admin</a>
+            <button class="btn-logout" onclick="localStorage.removeItem('nova_authenticated'); window.location.href='login.html';">🚪 Logout</button>
+        </nav>
+    </header>
+
+    <div class="portal-container">
+        <div class="hero-banner">
+            <div>
+                <div class="hero-title">Ethiopian Live Job Feed & Smart Search Bot 🤖</div>
+                <div class="hero-desc">Automatically scraping and posting verified vacancies from Abay Bank, Ethio Telecom, Safaricom, and top corporations.</div>
+            </div>
+            <div class="bot-badge">🟢 Bot Active & Scraping Live</div>
+        </div>
+
+        <div class="action-bar">
+            <div class="search-box">
+                <span>🔍</span>
+                <input type="text" id="jobSearchInput" placeholder="Search by job title, bank, or tech skill..." onkeyup="filterJobs()">
+            </div>
+            <button class="btn-primary" onclick="openPostJobModal()">➕ Post New Job</button>
+        </div>
+
+        <!-- Clean Categories Filter Wrap -->
+        <div class="categories-wrapper">
+            <div class="cat-chip active" onclick="filterByCategory('All', this)">All Sectors</div>
+            <div class="cat-chip" onclick="filterByCategory('Banking', this)">🏦 Banking & Finance</div>
+            <div class="cat-chip" onclick="filterByCategory('ICT', this)">💻 ICT & Software</div>
+            <div class="cat-chip" onclick="filterByCategory('Engineering', this)">⚙️ Engineering</div>
+            <div class="cat-chip" onclick="filterByCategory('NGO', this)">🤝 NGO</div>
+            <div class="cat-chip" onclick="filterByCategory('Medical', this)">🏥 Medical</div>
+        </div>
+
+        <div class="jobs-grid" id="jobsGridContainer"></div>
+    </div>
+
+    <!-- Post Job Modal -->
+    <div class="modal-overlay" id="postJobModal">
+        <div class="modal-content">
+            <h3 style="color:#38bdf8; margin-bottom:15px;">📝 Post a New Vacancy</h3>
+            <div class="form-group"><label>Job Title</label><input type="text" id="newJobTitle" placeholder="e.g. Senior Software Engineer"></div>
+            <div class="form-group"><label>Company Name</label><input type="text" id="newCompany" placeholder="e.g. Abay Bank S.C."></div>
+            <div class="form-group"><label>Category</label>
+                <select id="newCategory">
+                    <option value="Banking">Banking & Finance</option>
+                    <option value="ICT">ICT & Software</option>
+                    <option value="Engineering">Engineering</option>
+                    <option value="NGO">NGO</option>
+                    <option value="Medical">Medical</option>
+                </select>
+            </div>
+            <div class="form-group"><label>Location</label><input type="text" id="newLocation" value="Addis Ababa, Ethiopia"></div>
+            <div class="form-group"><label>Description</label><textarea id="newDesc" rows="3" placeholder="Job requirements..."></textarea></div>
+            <div style="display: flex; gap: 10px; margin-top: 15px;">
+                <button class="btn-primary" style="flex:1;" onclick="submitNewJob()">Publish Job 🚀</button>
+                <button class="btn-primary" style="flex:1; background:#374151;" onclick="closePostJobModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const defaultJobs = [
+            { id: 1, title: "Senior Software Developer", company: "Abay Bank S.C.", category: "Banking", location: "Addis Ababa, Head Office", tags: ["Python / Fullstack", "Permanent"], date: "Today, 2:30 PM", desc: "Abay Bank is looking for an experienced Software Developer to lead digital banking platforms." },
+            { id: 2, title: "Junior IT Support Specialist", company: "Macrovian Technology P.L.C", category: "ICT", location: "Bole, Addis Ababa", tags: ["Networking", "Hardware"], date: "Today, 11:00 AM", desc: "Provide technical support, server administration, and network security risk management." },
+            { id: 3, title: "Data Analyst & AI Annotator", company: "BIS Tech Solutions", category: "ICT", location: "Remote / Addis Ababa", tags: ["Computer Vision", "Python"], date: "Yesterday", desc: "Execute image annotation, object labeling, and project output tracking using CVAT." },
+            { id: 4, title: "Finance & Accounts Officer", company: "Awash Bank", category: "Banking", location: "Addis Ababa", tags: ["Accounting", "Auditing"], date: "2 days ago", desc: "Handle daily financial transactions and ledger reconciliations." }
+        ];
+
+        function loadLiveJobsPortal(filterCat = 'All') {
+            let container = document.getElementById('jobsGridContainer');
+            let userJobs = JSON.parse(localStorage.getItem('nova_custom_jobs') || '[]');
+            let allJobs = [...userJobs, ...defaultJobs];
+            container.innerHTML = "";
+
+            let filtered = allJobs.filter(j => filterCat === 'All' || j.category === filterCat);
+            if(filtered.length === 0) {
+                container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: #9ca3af; padding: 40px;">No jobs found in this category.</div>`;
+                return;
+            }
+
+            filtered.forEach(job => {
+                container.insertAdjacentHTML('beforeend', `
+                    <div class="job-card">
+                        <div>
+                            <div class="job-header">
+                                <div class="company-logo">${job.company.substring(0,2).toUpperCase()}</div>
+                                <div>
+                                    <div class="job-title">${job.title}</div>
+                                    <div class="company-name">🏢 ${job.company}</div>
+                                </div>
+                            </div>
+                            <div class="job-details-list">
+                                <div>📍 ${job.location}</div>
+                                <div>💡 ${job.desc}</div>
+                            </div>
+                            <div class="job-tags">${job.tags.map(t => `<span class="job-tag">${t}</span>`).join('')}</div>
+                        </div>
+                        <div class="job-card-footer">
+                            <div class="job-date">🕒 ${job.date}</div>
+                            <button class="btn-apply" onclick="applyToJob('${job.title}', '${job.company}')">Apply Online 🚀</button>
+                        </div>
+                    </div>
+                `);
+            });
+        }
+
+        function filterByCategory(cat, el) {
+            document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('active'));
+            el.classList.add('active');
+            loadLiveJobsPortal(cat);
+        }
+
+        function filterJobs() {
+            let query = document.getElementById('jobSearchInput').value.toLowerCase();
+            let allJobs = [...JSON.parse(localStorage.getItem('nova_custom_jobs') || '[]'), ...defaultJobs];
+            let container = document.getElementById('jobsGridContainer');
+            let results = allJobs.filter(j => j.title.toLowerCase().includes(query) || j.company.toLowerCase().includes(query));
+
+            container.innerHTML = "";
+            results.forEach(job => {
+                container.insertAdjacentHTML('beforeend', `
+                    <div class="job-card">
+                        <div>
+                            <div class="job-header">
+                                <div class="company-logo">${job.company.substring(0,2).toUpperCase()}</div>
+                                <div>
+                                    <div class="job-title">${job.title}</div>
+                                    <div class="company-name">🏢 ${job.company}</div>
+                                </div>
+                            </div>
+                            <div class="job-details-list">
+                                <div>📍 ${job.location}</div>
+                                <div>💡 ${job.desc}</div>
+                            </div>
+                        </div>
+                        <div class="job-card-footer">
+                            <div class="job-date">🕒 ${job.date}</div>
+                            <button class="btn-apply" onclick="applyToJob('${job.title}', '${job.company}')">Apply Online 🚀</button>
+                        </div>
+                    </div>
+                `);
+            });
+        }
+
+        function openPostJobModal() { document.getElementById('postJobModal').style.display = 'flex'; }
+        function closePostJobModal() { document.getElementById('postJobModal').style.display = 'none'; }
+        function submitNewJob() {
+            let title = document.getElementById('newJobTitle').value.trim();
+            let company = document.getElementById('newCompany').value.trim();
+            if(!title || !company) return alert("Fill required fields.");
+            let newJob = { id: Date.now(), title, company, category: document.getElementById('newCategory').value, location: document.getElementById('newLocation').value, tags: ["Verified"], date: "Just now", desc: document.getElementById('newDesc').value };
+            let userJobs = JSON.parse(localStorage.getItem('nova_custom_jobs') || '[]');
+            userJobs.unshift(newJob);
+            localStorage.setItem('nova_custom_jobs', JSON.stringify(userJobs));
+            closePostJobModal();
+            loadLiveJobsPortal();
+        }
+        function applyToJob(t, c) { alert(`🎯 Application submitted for "${t}" at ${c}! Use AI CV Builder to enhance your resume.`); }
+    </script>
+</body>
+</html>

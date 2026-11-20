@@ -1,0 +1,21 @@
+<a href="company.html">Employer Portal</a>
+<!DOCTYPE html>
+<html lang="en"> <header>
+    <div class="logo">NOVA AI</div>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="career.html">NOVA Career & Jobs</a>
+        <a href="company.html">Employer Portal</a>
+        <a href="profile.html">Feed & Profile</a>
+        <a href="chat.html">Messages</a>
+    </nav>
+</header>
+<head>
+    <meta charset="UTF-8">
+    <title>NOVA AI</title>
+</head>
+<body>
+    <h1>Welcome to NOVA AI</h1>
+    <p>Your Skills. Your Opportunities. Your Future.</p>
+</body>
+</html>

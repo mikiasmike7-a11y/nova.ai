@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Best Life Solutions (BIS Tech) | Dashboard</title>
+    <script>
+        if (localStorage.getItem('nova_authenticated') !== 'true') { window.location.href = "login.html"; }
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { 
+            background: linear-gradient(rgba(11, 15, 25, 0.88), rgba(11, 15, 25, 0.95)), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1920&q=80') center/cover fixed;
+            color: #ffffff; line-height: 1.6; 
+        }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 6%; background: rgba(17, 24, 39, 0.92); backdrop-filter: blur(8px); border-bottom: 1px solid #1f2937; position: sticky; top: 0; z-index: 100; flex-wrap: wrap; gap: 10px; }
+        .logo { font-size: 22px; font-weight: bold; color: #38bdf8; }
+        nav { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        nav a { color: #d1d5db; text-decoration: none; font-size: 13px; font-weight: 500; }
+        nav a:hover { color: #38bdf8; }
+        .btn-logout { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid #ef4444; padding: 4px 10px; border-radius: 6px; font-size: 12px; cursor: pointer; font-weight: bold; }
+        .hero { text-align: center; padding: 70px 20px; }
+        .hero h1 { font-size: 36px; margin-bottom: 15px; }
+        .hero h1 span { color: #38bdf8; }
+        .hero p { font-size: 15px; color: #94a3b8; max-width: 600px; margin: 0 auto 30px; }
+        .features { max-width: 1100px; margin: 0 auto 60px; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .feature-card { background: rgba(17, 24, 39, 0.85); border: 1px solid #1f2937; border-radius: 12px; padding: 25px; transition: 0.3s; }
+        .feature-card:hover { border-color: #38bdf8; }
+        .feature-card h3 { font-size: 18px; color: #f3f4f6; margin-bottom: 8px; }
+        .feature-card p { font-size: 13px; color: #9ca3af; margin-bottom: 15px; }
+        .feature-link { color: #38bdf8; text-decoration: none; font-size: 13px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">BIS Tech 🌟</div>
+        <nav>
+            <a href="index.html" style="color: #38bdf8;">Home</a>
+            <a href="clips.html">🎬 Clips & Feed</a>
+            <a href="profile.html">👤 Profile</a>
+            <a href="career.html">Career</a>
+            <a href="live.html">Live & Gifts</a>
+            <a href="payment.html">VIP Checkout</a>
+            <a href="admin.html" style="color: #ef4444;">⚙️ Admin</a>
+            <button class="btn-logout" onclick="localStorage.removeItem('nova_authenticated'); window.location.href='login.html';">🚪 Logout</button>
+        </nav>
+    </header>
+    <section class="hero">
+        <h1>Welcome to <span>Best Life Solutions (BIS Tech)</span></h1>
+        <p>Empowering your digital life, viral entertainment, career growth, and automated creator revenue splits in Ethiopia.</p>
+    </section>
+    <section class="features">
+        <div class="feature-card">
+            <h3>🎬 Clips & Viral Video Studio</h3>
+            <p>Upload short videos, explore trending feeds with side engagement buttons (Like, Comment, Share, Repost).</p>
+            <a href="clips.html" class="feature-link">Open Clips Feed →</a>
+        </div>
+        <div class="feature-card">
+            <h3>👤 Personal Profile & Gallery</h3>
+            <p>Manage your account bio, location, and inspect all your posted media and videos in a dynamic grid layout.</p>
+            <a href="profile.html" class="feature-link">View Profile →</a>
+        </div>
+        <div class="feature-card">
+            <h3>📄 Career & VIP Fast-Track</h3>
+            <p>Apply for jobs with free 1-week reviews or optional VIP fast-track matching connected directly to recruiters.</p>
+            <a href="career.html" class="feature-link">Explore Careers →</a>
+        </div>
+        <div class="feature-card">
+            <h3>💳 VIP Subscriptions & Checkout</h3>
+            <p>Optional VIP membership tiers (200 to 6,000 ETB) via Telebirr, CBE Birr, and Chapa with automated split logic.</p>
+            <a href="payment.html" class="feature-link">View VIP Plans →</a>
+        </div>
+    </section>
+</body>
+</html>

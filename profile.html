@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mi_ke.60 • BIS Tech Profile</title>
+    <script>
+        if (localStorage.getItem('nova_authenticated') !== 'true') { window.location.href = "login.html"; }
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        body { background: #0b0f19; color: #ffffff; line-height: 1.5; }
+        
+        /* Navigation Header */
+        header { display: flex; justify-content: space-between; align-items: center; padding: 15px 8%; background: rgba(17, 24, 39, 0.94); border-bottom: 1px solid #1f2937; position: sticky; top: 0; z-index: 100; flex-wrap: wrap; gap: 10px; }
+        .logo { font-size: 20px; font-weight: bold; color: #38bdf8; }
+        nav { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+        nav a { color: #d1d5db; text-decoration: none; font-size: 13px; font-weight: 500; }
+        nav a:hover { color: #38bdf8; }
+        .btn-logout { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid #ef4444; padding: 4px 10px; border-radius: 6px; font-size: 12px; cursor: pointer; font-weight: bold; }
+
+        /* Instagram Style Profile Container */
+        .ig-profile-container { max-width: 935px; margin: 30px auto; padding: 0 20px; }
+        
+        /* Top Profile Section */
+        .ig-header-section { display: flex; align-items: center; gap: 60px; margin-bottom: 40px; flex-wrap: wrap; }
+        @media(max-width: 768px) { .ig-header-section { gap: 20px; justify-content: center; text-align: center; } }
+
+        /* Profile Avatar with IG Gradient Ring & Click to Upload */
+        .ig-avatar-wrapper { position: relative; width: 150px; height: 150px; border-radius: 50%; background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); padding: 4px; cursor: pointer; flex-shrink: 0; }
+        .ig-avatar-inner { width: 100%; height: 100%; background: #111827; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 42px; font-weight: bold; color: white; overflow: hidden; position: relative; }
+        .ig-avatar-inner img { width: 100%; height: 100%; object-fit: cover; }
+        .avatar-upload-overlay { position: absolute; bottom: 0; background: rgba(0,0,0,0.7); width: 100%; text-align: center; font-size: 10px; padding: 4px; color: #38bdf8; font-weight: bold; }
+
+        /* Profile Details */
+        .ig-info-section { flex-grow: 1; }
+        .ig-username-row { display: flex; align-items: center; gap: 20px; margin-bottom: 20px; flex-wrap: wrap; }
+        .ig-username { font-size: 24px; font-weight: 400; color: #f3f4f6; }
+        .ig-btn { background: #262626; color: white; border: none; padding: 6px 16px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .ig-btn:hover { background: #363636; }
+
+        .ig-stats-row { display: flex; gap: 40px; margin-bottom: 20px; font-size: 15px; color: #f3f4f6; }
+        .ig-stats-row b { font-weight: 600; color: #ffffff; }
+
+        .ig-bio-section { font-size: 14px; color: #e5e7eb; }
+        .ig-bio-section .name-title { font-weight: 600; color: #38bdf8; margin-bottom: 2px; }
+
+        /* Tabs Row (Job Videos / Entertainment Videos) */
+        .ig-tabs-row { display: flex; justify-content: center; gap: 40px; border-top: 1px solid #262626; border-bottom: 1px solid #262626; margin-bottom: 25px; text-transform: uppercase; font-size: 12px; font-weight: 600; letter-spacing: 1px; color: #8e8e8e; }
+        .ig-tab { padding: 15px 0; cursor: pointer; display: flex; align-items: center; gap: 6px; border-top: 2px solid transparent; margin-top: -1px; }
+        .ig-tab.active { color: #ffffff; border-top-color: #38bdf8; }
+
+        /* Media Grid */
+        .media-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        @media(max-width: 768px) { .media-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; } }
+        .media-card { background: #111827; border-radius: 8px; overflow: hidden; border: 1px solid #1f2937; position: relative; }
+        .media-card video { width: 100%; height: 260px; object-fit: cover; background: #000; display: block; }
+        .media-caption-overlay { padding: 10px; font-size: 12px; color: #d1d5db; }
+        .badge-tag { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.7); color: #38bdf8; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; }
+    </style>
+</head>
+<body onload="loadInstagramProfile('job')">
+    <header>
+        <div class="logo">BIS Tech 🌟</div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="clips.html">Clips</a>
+            <a href="profile.html" style="color: #38bdf8; font-weight: bold;">👤 Profile</a>
+            <a href="career.html">Career</a>
+            <a href="company.html">Employer</a>
+            <a href="chat.html">Messages</a>
+            <a href="live.html">Live</a>
+            <a href="payment.html">VIP Checkout</a>
+            <a href="admin.html" style="color: #ef4444;">⚙️ Admin</a>
+            <button class="btn-logout" onclick="localStorage.removeItem('nova_authenticated'); window.location.href='login.html';">🚪 Logout</button>
+        </nav>
+    </header>
+
+    <div class="ig-profile-container">
+        <!-- Top Header Profile Info -->
+        <div class="ig-header-section">
+            <!-- Profile Picture Upload Trigger -->
+            <div class="ig-avatar-wrapper" onclick="document.getElementById('avatarFileInput').click()" title="Click to change profile picture">
+                <div class="ig-avatar-inner" id="userAvatarContainer">
+                    <span id="userAvatarText">MK</span>
+                </div>
+                <div class="avatar-upload-overlay">Change</div>
+            </div>
+            <input type="file" id="avatarFileInput" accept="image/*" style="display: none;" onchange="uploadProfilePicture(event)">
+            
+            <div class="ig-info-section">
+                <div class="ig-username-row">
+                    <span class="ig-username" id="profileUsername">mi_ke.60</span>
+                    <button class="ig-btn" onclick="openEditProfileModal()">Edit profile</button>
+                    <button class="ig-btn" onclick="openArchiveModal()">View archive</button>
+                </div>
+
+                <!-- Profile Counters -->
+                <div class="ig-stats-row">
+                    <div><b id="postCountDisplay">0</b> posts</div>
+                    <div><b id="followersCountDisplay">1,201</b> followers</div>
+                    <div><b id="followingCountDisplay">337</b> following</div>
+                </div>
+
+                <div class="ig-bio-section">
+                    <div class="name-title" id="profileDisplayName">ማኪ..Ťoxíć ☣️</div>
+                    <div id="bioText">እውንን ተስፋ ማጣት .. አሁኑ ☝️ ብቻ !!!</div>
+                    <div style="color: #38bdf8; margin-top: 4px;" id="profileWebsite">🔗 mi_ke.60</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs Row: Job Videos vs Entertainment Videos (Highlights removed entirely) -->
+        <div class="ig-tabs-row">
+            <div class="ig-tab active" id="tabJob" onclick="switchProfileTab('job')"><span>💼</span> Job Videos</div>
+            <div class="ig-tab" id="tabEnt" onclick="switchProfileTab('entertainment')"><span>🎬</span> Entertainment Videos</div>
+        </div>
+
+        <!-- Media Grid (Dynamic Posts based on active tab) -->
+        <div class="media-grid" id="profileVideosGrid">
+            <!-- Dynamic posts load here -->
+        </div>
+    </div>
+
+    <script>
+        let currentTab = 'job';
+
+        function loadInstagramProfile(tab = 'job') {
+            currentTab = tab;
+            const loggedInUser = localStorage.getItem('nova_user') || 'Miki';
+            document.getElementById('profileUsername').innerText = loggedInUser.toLowerCase().replace(/\s+/g, '_') + ".60";
+            document.getElementById('profileDisplayName').innerText = loggedInUser + " ☣️";
+            document.getElementById('userAvatarText').innerText = loggedInUser.substring(0, 2).toUpperCase();
+
+            // Load saved profile picture
+            let savedAvatar = localStorage.getItem('nova_profile_avatar');
+            if(savedAvatar) {
+                document.getElementById('userAvatarContainer').innerHTML = `<img src="${savedAvatar}" alt="Profile Picture">`;
+            }
+
+            // Load followers & following counts
+            document.getElementById('followersCountDisplay').innerText = localStorage.getItem('nova_followers') || '1,201';
+            document.getElementById('followingCountDisplay').innerText = localStorage.getItem('nova_following') || '337';
+
+            // Switch active tab styling
+            if(tab === 'job') {
+                document.getElementById('tabJob').classList.add('active');
+                document.getElementById('tabEnt').classList.remove('active');
+            } else {
+                document.getElementById('tabEnt').classList.add('active');
+                document.getElementById('tabJob').classList.remove('active');
+            }
+
+            // Load posts based on category
+            let existingPosts = JSON.parse(localStorage.getItem('nova_user_posts') || '[]');
+            let gridContainer = document.getElementById('profileVideosGrid');
+            
+            document.getElementById('postCountDisplay').innerText = existingPosts.length + 3;
+
+            // Sample data split into Job and Entertainment
+            let jobPosts = [
+                { videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4", caption: "Abay Bank IT Recruitment Intro 💼", category: "job" },
+                { videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4", caption: "BIS Tech Software Engineering Workflow 🚀", category: "job" }
+            ];
+
+            let entPosts = [
+                { videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4", caption: "Bro to bro how are you? Comedy skit 😂", category: "entertainment" },
+                { videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4", caption: "Ethiopian oldies Ethio-jazz vibe 🎶", category: "entertainment" }
+            ];
+
+            // Combine user uploaded posts into corresponding tabs
+            existingPosts.forEach(p => {
+                if(!p.category) p.category = 'entertainment'; // default
+                if(p.category === 'job') jobPosts.unshift(p);
+                else entPosts.unshift(p);
+            });
+
+            let activeList = (tab === 'job') ? jobPosts : entPosts;
+
+            if(activeList.length === 0) {
+                gridContainer.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: #9ca3af; padding: 40px;">No ${tab} videos posted yet.</div>`;
+                return;
+            }
+
+            let html = "";
+            activeList.forEach(post => {
+                html += `
+                    <div class="media-card">
+                        <div class="badge-tag">${post.category.toUpperCase()}</div>
+                        <video src="${post.videoUrl}" controls></video>
+                        <div class="media-caption-overlay">${post.caption}</div>
+                    </div>
+                `;
+            });
+
+            gridContainer.innerHTML = html;
+        }
+
+        function switchProfileTab(tab) {
+            loadInstagramProfile(tab);
+        }
+
+        // Profile Picture Upload Function
+        function uploadProfilePicture(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    let imageUrl = e.target.result;
+                    localStorage.setItem('nova_profile_avatar', imageUrl);
+                    document.getElementById('userAvatarContainer').innerHTML = `<img src="${imageUrl}" alt="Profile Picture">`;
+                    alert("✨ Profile picture updated successfully!");
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Edit Profile Modal Action
+        function openEditProfileModal() {
+            let newBio = prompt("Edit your Bio:", document.getElementById('bioText').innerText);
+            if(newBio !== null) {
+                document.getElementById('bioText').innerText = newBio;
+                alert("✅ Profile bio updated successfully!");
+            }
+        }
+
+        // Archive Modal Action
+        function openArchiveModal() {
+            alert("📂 Archive: All your previous stories and archived posts are safely stored here.");
+        }
+    </script>
+</body>
+</html>
