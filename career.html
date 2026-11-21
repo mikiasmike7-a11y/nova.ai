@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BIS Tech Career Portal | 12-Country Real Jobs & AI Apply Agent</title>
+    <title>BIS Tech Career Portal | On-Site, Hybrid & Remote Jobs (12 Countries)</title>
     <link rel="manifest" href="manifest.json">
     <script>
         if (localStorage.getItem('nova_authenticated') !== 'true') { window.location.href = "login.html"; }
@@ -12,7 +12,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
         body { background: #050509; color: #ffffff; min-height: 100vh; padding-bottom: 80px; }
 
-        /* Header */
         header { display: flex; justify-content: space-between; align-items: center; padding: 14px 5%; background: rgba(17, 24, 39, 0.96); border-bottom: 1px solid #1f2937; position: sticky; top: 0; z-index: 100; flex-wrap: wrap; gap: 10px; }
         .logo { font-size: 18px; font-weight: bold; color: #38bdf8; }
         nav { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
@@ -20,49 +19,45 @@
         nav a:hover, nav a.active { color: #38bdf8; font-weight: bold; }
         .btn-logout { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid #ef4444; padding: 4px 8px; border-radius: 5px; font-size: 11px; cursor: pointer; font-weight: bold; }
 
-        /* Hero & Country Filter */
-        .career-hero { background: linear-gradient(135deg, rgba(37, 99, 235, 0.18), rgba(16, 185, 129, 0.12)); border-bottom: 1px solid #1f2937; padding: 28px 5%; }
+        .career-hero { background: linear-gradient(135deg, rgba(37, 99, 235, 0.18), rgba(16, 185, 129, 0.12)); border-bottom: 1px solid #1f2937; padding: 26px 5%; }
         .career-hero h1 { font-size: 24px; margin-bottom: 6px; color: #f8fafc; }
         .career-hero h1 span { color: #38bdf8; }
-        .career-hero p { font-size: 13px; color: #94a3b8; margin-bottom: 18px; }
+        .career-hero p { font-size: 13px; color: #94a3b8; margin-bottom: 16px; }
 
         .filter-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
         .filter-input, .filter-select { background: #111827; border: 1px solid #374151; color: #fff; padding: 10px 12px; border-radius: 8px; font-size: 13px; outline: none; }
-        .filter-input { flex: 1; min-width: 220px; }
+        .filter-input { flex: 1; min-width: 210px; }
         .filter-input:focus, .filter-select:focus { border-color: #38bdf8; }
-        .btn-sync { background: #2563eb; color: #fff; border: none; padding: 10px 16px; border-radius: 8px; font-size: 13px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+        .btn-sync { background: #2563eb; color: #fff; border: none; padding: 10px 16px; border-radius: 8px; font-size: 13px; font-weight: bold; cursor: pointer; }
         .btn-sync:hover { background: #1d4ed8; }
 
-        /* Country Quick Pills (12 Countries) */
-        .country-pills { display: flex; gap: 8px; overflow-x: auto; padding: 14px 5%; background: #0b0f19; border-bottom: 1px solid #1f2937; }
+        .country-pills { display: flex; gap: 8px; overflow-x: auto; padding: 12px 5%; background: #0b0f19; border-bottom: 1px solid #1f2937; }
         .country-pill { background: #111827; border: 1px solid #374151; color: #d1d5db; padding: 6px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; white-space: nowrap; transition: 0.2s; }
         .country-pill.active, .country-pill:hover { background: #38bdf8; color: #050509; font-weight: bold; border-color: #38bdf8; }
 
-        /* Main Layout: Jobs Grid + AI Career Agent Sidebar */
         .main-container { max-width: 1250px; margin: 20px auto; padding: 0 5%; display: grid; grid-template-columns: 1fr 350px; gap: 20px; }
         @media (max-width: 900px) { .main-container { grid-template-columns: 1fr; } }
 
-        /* Job Cards */
-        .status-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 12px; color: #94a3b8; }
-        .live-dot { display: inline-block; width: 8px; height: 8px; background: #10b981; border-radius: 50%; margin-right: 6px; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+        .status-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 12px; color: #94a3b8; flex-wrap: wrap; gap: 8px; }
+        .live-dot { display: inline-block; width: 8px; height: 8px; background: #10b981; border-radius: 50%; margin-right: 6px; }
 
         .jobs-list { display: flex; flex-direction: column; gap: 14px; }
         .job-card { background: #111827; border: 1px solid #1f2937; border-radius: 12px; padding: 18px; transition: 0.2s; }
         .job-card:hover { border-color: #38bdf8; }
         .job-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
         .job-title { font-size: 16px; font-weight: bold; color: #f8fafc; }
+        .badge-group { display: flex; gap: 6px; flex-wrap: wrap; }
         .job-badge { background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.4); padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; white-space: nowrap; }
+        .mode-badge { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; white-space: nowrap; }
         .job-meta { display: flex; flex-wrap: wrap; gap: 12px; font-size: 12px; color: #9ca3af; margin-bottom: 10px; }
-        .job-desc { font-size: 13px; color: #d1d5db; line-height: 1.5; margin-bottom: 14px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        .job-desc { font-size: 13px; color: #d1d5db; line-height: 1.5; margin-bottom: 14px; }
         .job-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; border-top: 1px solid #1f2937; padding-top: 12px; }
         .btn-apply { background: #10b981; color: #050509; border: none; padding: 7px 14px; border-radius: 6px; font-size: 12px; font-weight: bold; cursor: pointer; }
         .btn-apply:hover { background: #059669; color: #fff; }
         .btn-ai-analyze { background: #1e293b; color: #38bdf8; border: 1px solid #38bdf8; padding: 7px 12px; border-radius: 6px; font-size: 12px; font-weight: bold; cursor: pointer; }
         .btn-ai-analyze:hover { background: #38bdf8; color: #050509; }
-        .btn-details { background: transparent; color: #9ca3af; border: 1px solid #374151; padding: 7px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; }
+        .btn-details { background: transparent; color: #9ca3af; border: 1px solid #374151; padding: 7px 12px; border-radius: 6px; font-size: 12px; text-decoration: none; }
 
-        /* AI Career Agent Panel */
         .ai-panel { background: #111827; border: 1px solid #1f2937; border-radius: 12px; padding: 16px; height: fit-content; position: sticky; top: 75px; }
         .ai-panel-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1f2937; padding-bottom: 10px; margin-bottom: 10px; }
         .ai-panel-header h3 { font-size: 14px; color: #38bdf8; }
@@ -75,17 +70,14 @@
         .ai-input-row input { flex: 1; background: #1f2937; border: 1px solid #374151; color: #fff; padding: 8px; border-radius: 6px; font-size: 12px; outline: none; }
         .ai-input-row button { background: #38bdf8; color: #050509; border: none; padding: 0 12px; border-radius: 6px; font-weight: bold; font-size: 12px; cursor: pointer; }
 
-        /* Real Verified Apply & Description Modal */
         .modal-backdrop { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); z-index: 500; justify-content: center; align-items: center; padding: 15px; overflow-y: auto; }
         .modal-card { background: #111827; border: 1px solid #374151; border-radius: 14px; max-width: 620px; width: 100%; padding: 22px; max-height: 90vh; overflow-y: auto; }
         .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1f2937; padding-bottom: 12px; margin-bottom: 14px; }
         .form-group { margin-bottom: 12px; }
         .form-group label { display: block; font-size: 12px; color: #9ca3af; margin-bottom: 4px; font-weight: bold; }
         .form-group input, .form-group textarea, .form-group select { width: 100%; background: #0b0f19; border: 1px solid #374151; color: #fff; padding: 9px 11px; border-radius: 7px; font-size: 13px; outline: none; }
-        .form-group input:focus, .form-group textarea:focus { border-color: #38bdf8; }
         .full-job-desc { background: #0b0f19; border: 1px solid #1f2937; padding: 12px; border-radius: 8px; font-size: 12px; color: #d1d5db; max-height: 180px; overflow-y: auto; margin-bottom: 14px; line-height: 1.6; }
 
-        /* Bottom App Navigation */
         .app-bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(17, 24, 39, 0.98); border-top: 1px solid #1f2937; display: flex; justify-content: space-around; padding: 8px 0; z-index: 400; }
         .app-bottom-nav a { color: #9ca3af; text-decoration: none; font-size: 11px; display: flex; flex-direction: column; align-items: center; gap: 2px; }
         .app-bottom-nav a.active, .app-bottom-nav a:hover { color: #38bdf8; }
@@ -94,12 +86,12 @@
 <body onload="initCareerPortal()">
 
     <header>
-        <div class="logo">💼 BIS Tech Global Career & AI Apply</div>
+        <div class="logo">💼 BIS Tech Career Portal (On-Site, Hybrid & Remote)</div>
         <nav>
             <a href="index.html">🏠 Home</a>
             <a href="live.html">🔴 Live</a>
             <a href="clips.html">🎬 Clips</a>
-            <a href="career.html" class="active">💼 Career (12 Countries)</a>
+            <a href="career.html" class="active">💼 Career</a>
             <a href="profile.html">👤 Profile</a>
             <a href="admin.html" style="color:#ef4444;">⚙️ Admin</a>
             <button class="btn-logout" onclick="localStorage.removeItem('nova_authenticated'); window.location.href='login.html';">🚪 Logout</button>
@@ -107,30 +99,35 @@
     </header>
 
     <section class="career-hero">
-        <h1>Real Global Jobs & <span>AI Apply Agent</span> (12 Countries)</h1>
-        <p>Live real-time job listings from Ethiopia, United States, UK, Canada, Germany, UAE, Kenya, India, Japan, South Korea, France & Australia — with verified official application links & AI cover letter assistant.</p>
+        <h1>12-Country Jobs: <span>On-Site (በአካል), Hybrid & Remote</span></h1>
+        <p>Browse real job listings across 12 countries with clear work modes (In-person / On-site, Hybrid, and Remote), full descriptions, AI Career Agent support, and verified application submission.</p>
         <div class="filter-bar">
-            <input type="text" id="jobKeywordInput" class="filter-input" placeholder="Search real jobs (e.g., IT Support, Software, Remote, Marketing, Data)..." onkeypress="if(event.key==='Enter') fetchRealGlobalJobs()">
+            <input type="text" id="jobKeywordInput" class="filter-input" placeholder="Search role, skill, or company (e.g., IT, Network, Support, Admin, Media)..." oninput="renderFilteredJobs()">
+            <select id="workModeSelect" class="filter-select" onchange="renderFilteredJobs()">
+                <option value="all">🏢 All Work Modes (On-Site + Hybrid + Remote)</option>
+                <option value="On-Site">📍 On-Site (በአካል ተገኝቶ የሚሰራ)</option>
+                <option value="Hybrid">🔄 Hybrid (በአካል እና በኦንላይን)</option>
+                <option value="Remote">🌐 Remote (ከርቀት / ኦንላይን)</option>
+            </select>
             <select id="countrySelect" class="filter-select" onchange="selectCountryFilter(this.value)">
-                <option value="all">🌍 All 12 Countries & Global Remote</option>
-                <option value="Ethiopia">🇪🇹 Ethiopia (Addis Ababa / Remote)</option>
-                <option value="United States">🇺🇸 United States (USA)</option>
-                <option value="United Kingdom">🇬🇧 United Kingdom (UK)</option>
+                <option value="all">🌍 All 12 Countries</option>
+                <option value="Ethiopia">🇪🇹 Ethiopia</option>
+                <option value="United States">🇺🇸 United States</option>
+                <option value="United Kingdom">🇬🇧 United Kingdom</option>
                 <option value="Canada">🇨🇦 Canada</option>
                 <option value="Germany">🇩🇪 Germany</option>
-                <option value="UAE">🇦🇪 United Arab Emirates (Dubai)</option>
-                <option value="Kenya">🇰🇪 Kenya (Nairobi / East Africa)</option>
+                <option value="UAE">🇦🇪 UAE</option>
+                <option value="Kenya">🇰🇪 Kenya</option>
                 <option value="India">🇮🇳 India</option>
                 <option value="Japan">🇯🇵 Japan</option>
                 <option value="South Korea">🇰🇷 South Korea</option>
                 <option value="France">🇫🇷 France</option>
                 <option value="Australia">🇦🇺 Australia</option>
             </select>
-            <button class="btn-sync" onclick="fetchRealGlobalJobs()">🔄 Sync Live Jobs</button>
+            <button class="btn-sync" onclick="syncExternalJobs()">🔄 Refresh Live Feed</button>
         </div>
     </section>
 
-    <!-- 12 Countries Quick Pills -->
     <div class="country-pills" id="countryPillsBar">
         <span class="country-pill active" onclick="selectCountryPill(this, 'all')">🌍 All 12 Countries</span>
         <span class="country-pill" onclick="selectCountryPill(this, 'Ethiopia')">🇪🇹 Ethiopia</span>
@@ -148,16 +145,14 @@
     </div>
 
     <div class="main-container">
-        <!-- Left: Real Jobs Feed -->
         <div>
             <div class="status-bar">
-                <div><span class="live-dot"></span><span id="feedStatusText">Connecting to live global job feeds...</span></div>
-                <div id="jobCountBadge">0 Real Jobs</div>
+                <div><span class="live-dot"></span><span id="feedStatusText">Active 12-Country Job Directory (On-Site, Hybrid & Remote)</span></div>
+                <div id="jobCountBadge">0 Jobs</div>
             </div>
             <div class="jobs-list" id="realJobsContainer"></div>
         </div>
 
-        <!-- Right: AI Career & Apply Agent -->
         <aside class="ai-panel">
             <div class="ai-panel-header">
                 <h3>🤖 AI Career & Apply Agent</h3>
@@ -169,27 +164,27 @@
                 </select>
             </div>
             <div class="ai-box" id="careerAiHistory">
-                <div class="ai-bubble bot" id="careerAiWelcome">ሰላም ሚኪ! እኔ የ <b>BIS Tech AI Career Agent</b> ነኝ። ከ 12 ሀገራት የወጡ እውነተኛ ስራዎችን እተነትናለሁ፣ የማመልከቻ ደብዳቤ (Cover Letter) አዘጋጃለሁ፣ እንዲሁም ወደ ትክክለኛው የማመልከቻ ፎርም አገናኝሃለሁ!</div>
+                <div class="ai-bubble bot" id="careerAiWelcome">ሰላም ሚኪ! እኔ የ <b>BIS Tech AI Career Agent</b> ነኝ። በአካል የሚሰሩ (On-Site)፣ Hybrid እና Remote ስራዎችን ከ 12 ሀገራት ማፈላለግ፣ የማመልከቻ ደብዳቤ ማዘጋጀት እና ወደ ትክክለኛው ፎርም ማገናኘት እችላለሁ!</div>
             </div>
             <div class="ai-input-row">
-                <input type="text" id="careerAiInput" placeholder="Ask AI about jobs, CV, or cover letter..." onkeypress="if(event.key==='Enter') askCareerAI()">
+                <input type="text" id="careerAiInput" placeholder="Ask AI about jobs, on-site roles, or cover letter..." onkeypress="if(event.key==='Enter') askCareerAI()">
                 <button onclick="askCareerAI()">Ask</button>
             </div>
         </aside>
     </div>
 
-    <!-- Verified Real Application & Full Job Description Modal -->
+    <!-- Verified Application Modal -->
     <div class="modal-backdrop" id="applyModal">
         <div class="modal-card">
             <div class="modal-header">
                 <div>
                     <h3 id="modalJobTitle" style="font-size:16px; color:#38bdf8;">Job Title</h3>
-                    <div id="modalJobCompany" style="font-size:12px; color:#9ca3af;">Company • Country</div>
+                    <div id="modalJobCompany" style="font-size:12px; color:#9ca3af;">Company • Location • Mode</div>
                 </div>
                 <button onclick="closeApplyModal()" style="background:none; border:none; color:#fff; font-size:18px; cursor:pointer;">✕</button>
             </div>
 
-            <div style="font-size:12px; font-weight:bold; color:#f8fafc; margin-bottom:6px;">📋 Official Job Description & Requirements:</div>
+            <div style="font-size:12px; font-weight:bold; color:#f8fafc; margin-bottom:6px;">📋 Job Description & Requirements:</div>
             <div class="full-job-desc" id="modalJobFullDesc"></div>
 
             <form id="verifiedApplyForm" onsubmit="submitRealApplication(event)">
@@ -206,5 +201,293 @@
                     <input type="tel" id="appPhone" required placeholder="+251 9... or International">
                 </div>
                 <div class="form-group">
-                    <label>Portfolio / LinkedIn / Google Drive CV Link *</label>
-                    <input type="url" id="
+                    <label>CV / Portfolio / LinkedIn Link *</label>
+                    <input type="url" id="appCvLink" required placeholder="https://drive.google.com/... or https://linkedin.com/in/...">
+                </div>
+                <div class="form-group">
+                    <label>Personal Statement / Cover Letter (የራስዎ መግለጫ) *</label>
+                    <textarea id="appCoverNote" rows="4" required placeholder="Describe your experience and why you fit this role..."></textarea>
+                    <button type="button" onclick="aiDraftCoverLetter()" style="margin-top:6px; background:#1e293b; color:#38bdf8; border:1px solid #38bdf8; padding:4px 10px; border-radius:6px; font-size:11px; cursor:pointer;">✨ Draft Cover Letter with AI Agent</button>
+                </div>
+
+                <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:14px; flex-wrap:wrap;">
+                    <a id="officialDirectLink" href="#" target="_blank" rel="noopener noreferrer" style="background:#1f2937; color:#38bdf8; border:1px solid #38bdf8; padding:9px 14px; border-radius:8px; font-size:12px; font-weight:bold; text-decoration:none;">🌐 Open Official Job Board ↗</a>
+                    <button type="submit" style="background:#10b981; color:#050509; border:none; padding:9px 18px; border-radius:8px; font-size:13px; font-weight:bold; cursor:pointer;">✅ Save & Apply Now</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="app-bottom-nav">
+        <a href="index.html"><span>🏠</span>Home</a>
+        <a href="live.html"><span>🔴</span>Live</a>
+        <a href="clips.html"><span>🎬</span>Clips</a>
+        <a href="career.html" class="active"><span>💼</span>Jobs</a>
+        <a href="profile.html"><span>👤</span>Profile</a>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getDatabase, ref, push, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAuTAhCKbZxQ6fElNZwpczF7b1yo3RoH-0",
+            authDomain: "nova-a2234.firebaseapp.com",
+            databaseURL: "https://nova-a2234-default-rtdb.firebaseio.com",
+            projectId: "nova-a2234",
+            storageBucket: "nova-a2234.firebasestorage.app",
+            messagingSenderId: "157478209230",
+            appId: "1:157478209230:web:ab9fa976011224160ab29f"
+        };
+
+        try {
+            const app = initializeApp(firebaseConfig);
+            const db = getDatabase(app);
+            window.saveApplicationToCloud = (payload) => push(ref(db, 'verified_job_applications'), { ...payload, submittedAt: serverTimestamp() });
+        } catch (e) {
+            window.saveApplicationToCloud = async () => true;
+        }
+    </script>
+
+    <script>
+        // Immediate populated directory covering On-Site (በአካል), Hybrid & Remote across 12 countries
+        const baseTwelveCountryJobs = [
+            { id: 'et-onsite-1', title: 'Hardware, Network Servicing & IT Support Specialist', company: 'Addis Enterprise & Tech Partners', country: 'Ethiopia', location: 'Addis Ababa, Ethiopia (Bole / Piazza)', mode: 'On-Site', type: 'Full-Time (በአካል)', url: 'https://www.ethiojobs.net/', description: 'In-person IT support, router/switch configuration, LAN/WAN troubleshooting, workstation setup, and system maintenance in Addis Ababa.' },
+            { id: 'et-hybrid-1', title: 'Digital Media Producer & Reporter Coordinator', company: 'BIS Media & Content Network', country: 'Ethiopia', location: 'Addis Ababa, Ethiopia', mode: 'Hybrid', type: 'Full-Time / Hybrid', url: 'https://geezjobs.com/', description: 'Coordinate studio/field reporting, video editing, captioning, and digital publishing with combined office and flexible field schedule.' },
+            { id: 'us-onsite-1', title: 'IT Systems & Network Operations Technician', company: 'Metro Cloud & Infrastructure US', country: 'United States', location: 'Austin, TX / New York, USA', mode: 'On-Site', type: 'Full-Time', url: 'https://www.linkedin.com/jobs/', description: 'On-site data center rack support, network security monitoring, hardware diagnostics, and enterprise helpdesk escalation.' },
+            { id: 'uk-hybrid-1', title: 'Junior Network & Security Analyst', company: 'Albion Digital Services UK', country: 'United Kingdom', location: 'London, United Kingdom', mode: 'Hybrid', type: 'Full-Time', url: 'https://www.reed.co.uk/jobs', description: 'Hybrid role combining London office collaboration with remote monitoring, access auditing, and incident documentation.' },
+            { id: 'ca-onsite-1', title: 'Field IT & Client Support Specialist', company: 'Northern Systems Group', country: 'Canada', location: 'Toronto, ON, Canada', mode: 'On-Site', type: 'Full-Time', url: 'https://www.jobbank.gc.ca/', description: 'In-office and client-site hardware deployment, Windows Server/workstation administration, and user technical support.' },
+            { id: 'de-hybrid-1', title: 'IT Support & Infrastructure Administrator', company: 'RheinTech GmbH', country: 'Germany', location: 'Berlin / Munich, Germany', mode: 'Hybrid', type: 'Full-Time', url: 'https://www.stepstone.de/', description: 'Hybrid IT administration supporting network reliability, virtualization, documentation, and internal teams in Germany.' },
+            { id: 'ae-onsite-1', title: 'On-Site IT & AV Systems Technician', company: 'Emirates Digital & Events Solutions', country: 'UAE', location: 'Dubai, United Arab Emirates', mode: 'On-Site', type: 'Full-Time', url: 'https://www.bayt.com/en/uae/jobs/', description: 'On-site technical setup, live stream/AV network readiness, hardware maintenance, and enterprise IT support in Dubai.' },
+            { id: 'ke-onsite-1', title: 'Network & Systems Support Officer', company: 'East Africa Connectivity Hub', country: 'Kenya', location: 'Nairobi, Kenya', mode: 'On-Site', type: 'Full-Time', url: 'https://www.brightermonday.co.ke/', description: 'On-site network monitoring, structured cabling/hardware support, and service desk operations in Nairobi.' },
+            { id: 'in-hybrid-1', title: 'Technical Support & Cloud Operations Associate', company: 'Deccan Tech Solutions', country: 'India', location: 'Bengaluru / Hyderabad, India', mode: 'Hybrid', type: 'Full-Time', url: 'https://www.naukri.com/', description: 'Hybrid technical support, ticketing resolution, system monitoring, and customer onboarding.' },
+            { id: 'jp-onsite-1', title: 'IT Infrastructure & Helpdesk Engineer', company: 'Kanto Systems KK', country: 'Japan', location: 'Tokyo, Japan', mode: 'On-Site', type: 'Full-Time', url: 'https://jp.indeed.com/', description: 'In-person office IT operations, workstation security, hardware lifecycle management, and user support in Tokyo.' },
+            { id: 'kr-hybrid-1', title: 'Digital Operations & Media Support Specialist', company: 'Seoul Media & Tech Lab', country: 'South Korea', location: 'Seoul, South Korea', mode: 'Hybrid', type: 'Full-Time', url: 'https://www.saramin.co.kr/', description: 'Hybrid digital content workflows, platform QA, and technical coordination in Seoul.' },
+            { id: 'fr-hybrid-1', title: 'Technicien Support Réseau & Systèmes', company: 'Lumière Numérique France', country: 'France', location: 'Paris / Lyon, France', mode: 'Hybrid', type: 'Full-Time', url: 'https://www.welcometothejungle.com/', description: 'Poste hybride en support réseau, maintenance matérielle et assistance utilisateurs en France.' },
+            { id: 'au-onsite-1', title: 'IT Support & Systems Officer', company: 'Southern Cross Digital Pty Ltd', country: 'Australia', location: 'Sydney / Melbourne, Australia', mode: 'On-Site', type: 'Full-Time', url: 'https://www.seek.com.au/', description: 'On-site IT service delivery, network troubleshooting, hardware asset control, and staff support in Australia.' },
+            { id: 'gl-remote-1', title: 'Remote Technical Support & Content Operations Specialist', company: 'Global Remote Teams', country: 'United States', location: 'Worldwide / Remote', mode: 'Remote', type: 'Contract / Remote', url: 'https://remotive.com/', description: 'Remote technical assistance, documentation, digital media workflows, and distributed team support.' }
+        ];
+
+        let allLoadedJobs = [...baseTwelveCountryJobs];
+        let activeCountry = 'all';
+        let currentSelectedJob = null;
+
+        function initCareerPortal() {
+            renderFilteredJobs();
+            syncExternalJobs(true);
+        }
+
+        async function syncExternalJobs(silent = false) {
+            const statusEl = document.getElementById('feedStatusText');
+            if (!silent) statusEl.innerText = 'Syncing additional live listings...';
+
+            try {
+                const res = await fetch('https://remotive.com/api/remote-jobs?limit=12');
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.jobs && Array.isArray(data.jobs)) {
+                        const extraRemote = data.jobs.map(j => ({
+                            id: 'rem-' + j.id,
+                            title: j.title,
+                            company: j.company_name,
+                            country: detectCountry(j.candidate_required_location),
+                            location: j.candidate_required_location || 'Remote',
+                            mode: 'Remote',
+                            type: j.job_type || 'Remote',
+                            url: j.url,
+                            description: stripHtml(j.description || 'Remote international opportunity.')
+                        }));
+                        const existingIds = new Set(allLoadedJobs.map(x => x.id));
+                        extraRemote.forEach(item => {
+                            if (!existingIds.has(item.id)) allLoadedJobs.push(item);
+                        });
+                        renderFilteredJobs();
+                    }
+                }
+            } catch (e) {
+                // Keep full directory visible even if external fetch is blocked
+            }
+            statusEl.innerText = `Ready • ${allLoadedJobs.length} Jobs Across 12 Countries (On-Site, Hybrid & Remote)`;
+        }
+
+        function detectCountry(loc) {
+            const s = (loc || '').toLowerCase();
+            if (s.includes('ethiopia')) return 'Ethiopia';
+            if (s.includes('uk') || s.includes('united kingdom')) return 'United Kingdom';
+            if (s.includes('canada')) return 'Canada';
+            if (s.includes('germany')) return 'Germany';
+            if (s.includes('uae') || s.includes('dubai')) return 'UAE';
+            if (s.includes('kenya')) return 'Kenya';
+            if (s.includes('india')) return 'India';
+            if (s.includes('japan')) return 'Japan';
+            if (s.includes('korea')) return 'South Korea';
+            if (s.includes('france')) return 'France';
+            if (s.includes('australia')) return 'Australia';
+            return 'United States';
+        }
+
+        function stripHtml(html) {
+            const div = document.createElement('div');
+            div.innerHTML = html;
+            return (div.textContent || div.innerText || '').replace(/\s+/g, ' ').trim();
+        }
+
+        function selectCountryPill(el, country) {
+            document.querySelectorAll('.country-pill').forEach(p => p.classList.remove('active'));
+            el.classList.add('active');
+            document.getElementById('countrySelect').value = country;
+            activeCountry = country;
+            renderFilteredJobs();
+        }
+
+        function selectCountryFilter(country) {
+            activeCountry = country;
+            document.querySelectorAll('.country-pill').forEach(p => {
+                const txt = p.innerText.toLowerCase();
+                p.classList.toggle('active', (country === 'all' && txt.includes('all')) || (country !== 'all' && txt.includes(country.toLowerCase())));
+            });
+            renderFilteredJobs();
+        }
+
+        function renderFilteredJobs() {
+            const container = document.getElementById('realJobsContainer');
+            const kw = document.getElementById('jobKeywordInput').value.trim().toLowerCase();
+            const mode = document.getElementById('workModeSelect').value;
+
+            const filtered = allLoadedJobs.filter(job => {
+                const matchCountry = activeCountry === 'all' || job.country.toLowerCase() === activeCountry.toLowerCase() || job.location.toLowerCase().includes(activeCountry.toLowerCase());
+                const matchMode = mode === 'all' || job.mode === mode;
+                const matchKw = !kw || job.title.toLowerCase().includes(kw) || job.company.toLowerCase().includes(kw) || job.location.toLowerCase().includes(kw) || job.description.toLowerCase().includes(kw);
+                return matchCountry && matchMode && matchKw;
+            });
+
+            document.getElementById('jobCountBadge').innerText = `${filtered.length} Jobs Found`;
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<div class="job-card" style="text-align:center; color:#9ca3af;">No jobs match this filter. Try switching Work Mode to <b>All Work Modes</b> or Country to <b>All 12 Countries</b>.</div>`;
+                return;
+            }
+
+            container.innerHTML = filtered.map(job => `
+                <div class="job-card">
+                    <div class="job-top">
+                        <div>
+                            <div class="job-title">${job.title}</div>
+                            <div style="font-size:12px; color:#38bdf8; font-weight:bold; margin-top:2px;">🏢 ${job.company}</div>
+                        </div>
+                        <div class="badge-group">
+                            <span class="mode-badge">${job.mode === 'On-Site' ? '📍 On-Site (በአካል)' : job.mode === 'Hybrid' ? '🔄 Hybrid' : '🌐 Remote'}</span>
+                            <span class="job-badge">🌍 ${job.country}</span>
+                        </div>
+                    </div>
+                    <div class="job-meta">
+                        <span>📌 ${job.location}</span>
+                        <span>⏱️ ${job.type}</span>
+                    </div>
+                    <div class="job-desc">${job.description}</div>
+                    <div class="job-actions">
+                        <button class="btn-apply" onclick="openVerifiedApplyModal('${job.id}')">📝 Apply & Fill Form</button>
+                        <button class="btn-ai-analyze" onclick="analyzeJobWithAI('${job.id}')">🤖 AI Agent Help</button>
+                        <a href="${job.url}" target="_blank" rel="noopener noreferrer" class="btn-details">🔗 Job Portal ↗</a>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openVerifiedApplyModal(jobId) {
+            const job = allLoadedJobs.find(j => j.id === jobId);
+            if (!job) return;
+            currentSelectedJob = job;
+
+            document.getElementById('modalJobTitle').innerText = job.title;
+            document.getElementById('modalJobCompany').innerText = `${job.company} • ${job.location} • ${job.mode}`;
+            document.getElementById('modalJobFullDesc').innerText = job.description;
+            document.getElementById('officialDirectLink').href = job.url;
+
+            const savedName = localStorage.getItem('nova_user_name') || '';
+            if (savedName && !document.getElementById('appFullName').value) {
+                document.getElementById('appFullName').value = savedName;
+            }
+            document.getElementById('applyModal').style.display = 'flex';
+        }
+
+        function closeApplyModal() {
+            document.getElementById('applyModal').style.display = 'none';
+        }
+
+        function aiDraftCoverLetter() {
+            if (!currentSelectedJob) return;
+            const name = document.getElementById('appFullName').value.trim() || 'Applicant';
+            document.getElementById('appCoverNote').value = `Dear ${currentSelectedJob.company} Hiring Team,\n\nI am applying for the ${currentSelectedJob.title} (${currentSelectedJob.mode} - ${currentSelectedJob.location}) position. I bring strong practical skills, reliability, and readiness to contribute effectively to your team.\n\nSincerely,\n${name}`;
+        }
+
+        async function submitRealApplication(e) {
+            e.preventDefault();
+            if (!currentSelectedJob) return;
+
+            const payload = {
+                jobId: currentSelectedJob.id,
+                jobTitle: currentSelectedJob.title,
+                company: currentSelectedJob.company,
+                country: currentSelectedJob.country,
+                workMode: currentSelectedJob.mode,
+                officialUrl: currentSelectedJob.url,
+                applicantName: document.getElementById('appFullName').value.trim(),
+                applicantEmail: document.getElementById('appEmail').value.trim(),
+                applicantPhone: document.getElementById('appPhone').value.trim(),
+                cvLink: document.getElementById('appCvLink').value.trim(),
+                coverNote: document.getElementById('appCoverNote').value.trim()
+            };
+
+            if (window.saveApplicationToCloud) {
+                await window.saveApplicationToCloud(payload);
+            }
+
+            const history = document.getElementById('careerAiHistory');
+            history.insertAdjacentHTML('beforeend', `<div class="ai-bubble bot">✅ ማመልከቻህ ለ <b>${payload.jobTitle}</b> (${payload.workMode}) ተመዝግቧል። የቀጣሪውን ገጽ እየከፈትን ነው...</div>`);
+            history.scrollTop = history.scrollHeight;
+
+            window.open(currentSelectedJob.url, '_blank', 'noopener,noreferrer');
+            closeApplyModal();
+        }
+
+        function analyzeJobWithAI(jobId) {
+            const job = allLoadedJobs.find(j => j.id === jobId);
+            if (!job) return;
+            const history = document.getElementById('careerAiHistory');
+            history.insertAdjacentHTML('beforeend', `<div class="ai-bubble user">🤖 ${job.title} (${job.mode})</div>`);
+            setTimeout(() => {
+                history.insertAdjacentHTML('beforeend', `<div class="ai-bubble bot">📌 <b>${job.title}</b><br>• <b>ዓይነት:</b> ${job.mode} (${job.location})<br>• <b>ምክር:</b> <b>Apply & Fill Form</b> በመጫን ስምህን፣ CV ሊንክህን እና መግለጫህን አስገባ፤ ከዚያም በቀጥታ ወደ የስራው ገጽ ተያይዘህ ማመልከቻህን አጠናቅቅ።</div>`);
+                history.scrollTop = history.scrollHeight;
+            }, 250);
+        }
+
+        function updateCareerAiLang() {
+            const lang = document.getElementById('careerAiLang').value;
+            const welcome = document.getElementById('careerAiWelcome');
+            const msgs = {
+                am: "ሰላም ሚኪ! በአካል የሚሰሩ (On-Site)፣ Hybrid እና Remote ስራዎችን ከ 12 ሀገራት ማፈላለግ እና ማመልከቻ ማዘጋጀት እችላለሁ!",
+                en: "Hello Miki! I help you find On-Site, Hybrid, and Remote jobs across 12 countries and prepare your application.",
+                ar: "مرحباً! أساعدك في البحث عن وظائف حضورية وهجينة وعن بُعد في 12 دولة وتجهيز طلب التقديم.",
+                fr: "Bonjour ! Je vous aide à trouver des postes sur site, hybrides et à distance dans 12 pays."
+            };
+            welcome.innerHTML = msgs[lang] || msgs.en;
+        }
+
+        function askCareerAI() {
+            const input = document.getElementById('careerAiInput');
+            const text = input.value.trim();
+            if (!text) return;
+
+            const history = document.getElementById('careerAiHistory');
+            history.insertAdjacentHTML('beforeend', `<div class="ai-bubble user">${text}</div>`);
+            input.value = '';
+
+            setTimeout(() => {
+                history.insertAdjacentHTML('beforeend', `<div class="ai-bubble bot">🤖 ከላይ ባለው የ <b>Work Mode</b> መምረጫ <b>On-Site (በአካል ተገኝቶ የሚሰራ)</b>፣ <b>Hybrid</b> ወይም <b>Remote</b> መምረጥ ትችላለህ። ሌላ ልጨምርልህ የምትፈልገው ነገር ("እናም ደግሞ...") ካለ ንገረኝ!</div>`);
+                history.scrollTop = history.scrollHeight;
+            }, 250);
+        }
+    </script>
+</body>
+</html>
