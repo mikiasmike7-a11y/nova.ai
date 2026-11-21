@@ -3,20 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BIS Tech - Best Life Solutions | Dashboard</title>
+    <title>BIS Tech - Best Life Solutions | All-in-One App</title>
     <meta name="description" content="BIS Tech (Best Life Solutions) - Official platform for Live Streaming, Clips, Career, VIP Checkout, and 24/7 Cloud Arena by Miki.">
     <meta name="keywords" content="BIS Tech, Best Life Solutions, BIS Tech Live, Miki, Clips, Career, Ethiopia">
     <meta name="author" content="Miki - BIS Tech">
+    <meta name="google-site-verification" content="googleb46391a9c10eaa0a" />
     <link rel="canonical" href="https://mikiasmike7-a11y.github.io/bis-tech-live/">
     <link rel="manifest" href="manifest.json">
 
-    <!-- Open Graph (በማህበራዊ ሚዲያ እና በ Search ላይ ሲጋራ የሚታይ መረጃ) -->
     <meta property="og:title" content="BIS Tech - Best Life Solutions">
-    <meta property="og:description" content="Official BIS Tech platform: Clips & Feed, Career, Live & Gifts, VIP Checkout, and 24/7 Support.">
+    <meta property="og:description" content="Official BIS Tech platform: Live Streaming, Clips, Career, VIP Checkout & 24/7 Support.">
     <meta property="og:url" content="https://mikiasmike7-a11y.github.io/bis-tech-live/">
     <meta property="og:type" content="website">
 
-    <!-- Google Schema Markup (ለ Google "BIS Tech" ብራንድ መሆኑን የሚያሳውቅ) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -24,16 +23,6 @@
       "name": "BIS Tech",
       "alternateName": ["BIS Tech Live", "Best Life Solutions"],
       "url": "https://mikiasmike7-a11y.github.io/bis-tech-live/"
-    }
-    </script>
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "BIS Tech",
-      "alternateName": "Best Life Solutions",
-      "url": "https://mikiasmike7-a11y.github.io/bis-tech-live/",
-      "logo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=512&q=80"
     }
     </script>
 
@@ -44,65 +33,107 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
         body { 
             background: linear-gradient(rgba(11, 15, 25, 0.88), rgba(11, 15, 25, 0.95)), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1920&q=80') center/cover fixed;
-            color: #ffffff; line-height: 1.6; 
+            color: #ffffff; line-height: 1.6; padding-bottom: 70px;
         }
-        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 6%; background: rgba(17, 24, 39, 0.92); backdrop-filter: blur(8px); border-bottom: 1px solid #1f2937; position: sticky; top: 0; z-index: 100; flex-wrap: wrap; gap: 10px; }
-        .logo { font-size: 22px; font-weight: bold; color: #38bdf8; }
-        nav { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-        nav a { color: #d1d5db; text-decoration: none; font-size: 13px; font-weight: 500; }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 16px 5%; background: rgba(17, 24, 39, 0.95); backdrop-filter: blur(8px); border-bottom: 1px solid #1f2937; position: sticky; top: 0; z-index: 100; flex-wrap: wrap; gap: 10px; }
+        .logo { font-size: 20px; font-weight: bold; color: #38bdf8; }
+        nav { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+        nav a { color: #d1d5db; text-decoration: none; font-size: 13px; font-weight: 500; transition: 0.2s; }
         nav a:hover { color: #38bdf8; }
         .btn-logout { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid #ef4444; padding: 4px 10px; border-radius: 6px; font-size: 12px; cursor: pointer; font-weight: bold; }
-        .hero { text-align: center; padding: 70px 20px; }
-        .hero h1 { font-size: 36px; margin-bottom: 15px; }
+        
+        .hero { text-align: center; padding: 50px 20px 35px; }
+        .hero h1 { font-size: 32px; margin-bottom: 12px; }
         .hero h1 span { color: #38bdf8; }
-        .hero p { font-size: 15px; color: #94a3b8; max-width: 600px; margin: 0 auto 30px; }
-        .features { max-width: 1100px; margin: 0 auto 60px; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        .feature-card { background: rgba(17, 24, 39, 0.85); border: 1px solid #1f2937; border-radius: 12px; padding: 25px; transition: 0.3s; }
-        .feature-card:hover { border-color: #38bdf8; }
-        .feature-card h3 { font-size: 18px; color: #f3f4f6; margin-bottom: 8px; }
+        .hero p { font-size: 15px; color: #94a3b8; max-width: 600px; margin: 0 auto 25px; }
+        .live-cta-btn { display: inline-block; background: linear-gradient(135deg, #ef4444, #2563eb); color: #fff; text-decoration: none; padding: 12px 26px; border-radius: 30px; font-weight: bold; font-size: 14px; box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3); }
+
+        .features { max-width: 1100px; margin: 0 auto 40px; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }
+        .feature-card { background: rgba(17, 24, 39, 0.88); border: 1px solid #1f2937; border-radius: 12px; padding: 22px; transition: 0.3s; display: flex; flex-direction: column; justify-content: space-between; }
+        .feature-card:hover { border-color: #38bdf8; transform: translateY(-2px); }
+        .feature-card h3 { font-size: 17px; color: #f3f4f6; margin-bottom: 8px; }
         .feature-card p { font-size: 13px; color: #9ca3af; margin-bottom: 15px; }
         .feature-link { color: #38bdf8; text-decoration: none; font-size: 13px; font-weight: bold; }
+
+        /* Mobile / PWA Bottom App Bar (ሁሉንም በቀጥታ የሚከፍት) */
+        .app-bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(17, 24, 39, 0.98); backdrop-filter: blur(12px); border-top: 1px solid #1f2937; display: flex; justify-content: space-around; padding: 8px 0; z-index: 999; }
+        .app-bottom-nav a { color: #9ca3af; text-decoration: none; font-size: 11px; display: flex; flex-direction: column; align-items: center; gap: 2px; font-weight: 500; }
+        .app-bottom-nav a.active, .app-bottom-nav a:hover { color: #38bdf8; }
     </style>
 </head>
 <body>
     <header>
         <div class="logo">BIS Tech 🌟</div>
         <nav>
-            <a href="index.html" style="color: #38bdf8;">Home</a>
+            <a href="index.html" style="color: #38bdf8; font-weight: bold;">🏠 Home</a>
+            <a href="live.html">🔴 Live Arena</a>
             <a href="clips.html">🎬 Clips & Feed</a>
+            <a href="career.html">💼 Career & Jobs</a>
             <a href="profile.html">👤 Profile</a>
-            <a href="career.html">Career</a>
-            <a href="live.html">Live & Gifts</a>
-            <a href="payment.html">VIP Checkout</a>
+            <a href="payment.html">💳 VIP Checkout</a>
             <a href="admin.html" style="color: #ef4444;">⚙️ Admin</a>
             <button class="btn-logout" onclick="localStorage.removeItem('nova_authenticated'); window.location.href='login.html';">🚪 Logout</button>
         </nav>
     </header>
+
     <section class="hero">
-        <h1>Welcome to <span>Best Life Solutions (BIS Tech)</span></h1>
-        <p>Empowering your digital life, viral entertainment, career growth, and automated creator revenue splits in Ethiopia.</p>
+        <h1>Welcome to <span>BIS Tech (Best Life Solutions)</span></h1>
+        <p>Your complete digital ecosystem: 24/7 Live Streaming, Viral Clips, Career & Job Matching, Profile Studio, and VIP Plans.</p>
+        <a href="live.html" class="live-cta-btn">🔴 Enter 24/7 Live Arena & AI Supporter</a>
     </section>
+
     <section class="features">
         <div class="feature-card">
-            <h3>🎬 Clips & Viral Video Studio</h3>
-            <p>Upload short videos, explore trending feeds with side engagement buttons (Like, Comment, Share, Repost).</p>
+            <div>
+                <h3>🔴 TikTok Live Arena & 12-Lang AI</h3>
+                <p>Stream live with MP3 music upload, sound controls, real-time gifts, and 12-language AI support.</p>
+            </div>
+            <a href="live.html" class="feature-link">Open Live Arena →</a>
+        </div>
+        <div class="feature-card">
+            <div>
+                <h3>🎬 Clips & Viral Video Studio</h3>
+                <p>Upload short videos, explore trending feeds with side engagement buttons (Like, Comment, Share, Repost).</p>
+            </div>
             <a href="clips.html" class="feature-link">Open Clips Feed →</a>
         </div>
         <div class="feature-card">
-            <h3>👤 Personal Profile & Gallery</h3>
-            <p>Manage your account bio, location, and inspect all your posted media and videos in a dynamic grid layout.</p>
+            <div>
+                <h3>💼 Career & Job Portal</h3>
+                <p>Apply for jobs with free 1-week reviews or optional VIP fast-track matching connected directly to recruiters.</p>
+            </div>
+            <a href="career.html" class="feature-link">Explore Careers & Jobs →</a>
+        </div>
+        <div class="feature-card">
+            <div>
+                <h3>👤 Personal Profile & Gallery</h3>
+                <p>Manage your account bio, location, and inspect all your posted media and videos in a dynamic grid layout.</p>
+            </div>
             <a href="profile.html" class="feature-link">View Profile →</a>
         </div>
         <div class="feature-card">
-            <h3>📄 Career & VIP Fast-Track</h3>
-            <p>Apply for jobs with free 1-week reviews or optional VIP fast-track matching connected directly to recruiters.</p>
-            <a href="career.html" class="feature-link">Explore Careers →</a>
-        </div>
-        <div class="feature-card">
-            <h3>💳 VIP Subscriptions & Checkout</h3>
-            <p>Optional VIP membership tiers (200 to 6,000 ETB) via Telebirr, CBE Birr, and Chapa with automated split logic.</p>
+            <div>
+                <h3>💳 VIP Subscriptions & Checkout</h3>
+                <p>Optional VIP membership tiers (200 to 6,000 ETB) via Telebirr, CBE Birr, and Chapa with automated split logic.</p>
+            </div>
             <a href="payment.html" class="feature-link">View VIP Plans →</a>
         </div>
+        <div class="feature-card">
+            <div>
+                <h3>⚙️ Admin Control Center</h3>
+                <p>Manage platform users, live streams, job listings, and analytics from one dashboard.</p>
+            </div>
+            <a href="admin.html" class="feature-link">Open Admin Panel →</a>
+        </div>
     </section>
+
+    <!-- Bottom App Navigation Bar -->
+    <div class="app-bottom-nav">
+        <a href="index.html" class="active"><span>🏠</span>Home</a>
+        <a href="live.html"><span>🔴</span>Live</a>
+        <a href="clips.html"><span>🎬</span>Clips</a>
+        <a href="career.html"><span>💼</span>Jobs</a>
+        <a href="profile.html"><span>👤</span>Profile</a>
+    </div>
 </body>
 </html>
